@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create business profile - WeConnect</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/ionicons.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+</head>
+<body class="dash-body">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-right">
+    <div class="container">
+      <a class="navbar-brand logo" href="#">
+        WeConnect
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDropdown" aria-controls="navbarDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarDropdown">
+        <div class="col-md-7 no-padding">
+          <form class="form-inline" method="GET">
+            <div class="input-group col-md-12 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="ion-ios-search-strong"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="Search for business..."/>
+            </div>
+          </form>
+        </div>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"><i class="ion-user"></i>Muhozi Emery</a>
+          </li>
+        </ul>  
+      </div>
+    </div>
+  </nav>
+  <section class="content-body">
+    <div class="container main-body" style="">
+      <div class="row justify-content-center">
+        <div class="col-md-6 no-padding">
+            <h5 class="text-center">Create business profile</h5><hr/>
+            <form method="post" action="#">
+              <div class="form-group row">
+                <div class="col-md-3">
+                  <label>Business name</label>
+                </div>
+                <div class="col-md-9">
+                  <input type="text" name="name" class="form-control form-control-sm" placeholder="Enter business name..."/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">
+                  <label>Description</label>
+                </div>
+                <div class="col-md-9">
+                  <textarea name="description" class="form-control form-control-sm" style="min-height: 180px" placeholder="Describe your business..."></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">
+                  <label>Country</label>
+                </div>
+                <div class="col-md-9">
+                  <select class="form-control form-control-sm" name="country">
+                    <option disabled selected>Select country the business reside in ...</option>
+                    <option>Burundi</option>
+                    <option>Kenya</option>
+                    <option>Rwanda</option>
+                    <option>Tanzania</option>
+                    <option>Uganda</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">
+                  <label>City</label>
+                </div>
+                <div class="col-md-9">
+                  <input type="text" name="name" class="form-control form-control-sm" placeholder="City..."/>
+                </div>
+              </div><br/><br/>
+              <div class="form-group">
+                <div class="justify-content-center">
+                  <button type="submit" class="btn btn-secondary btn-block btn-sm">Create account</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </section>
+  <footer class="text-center">
+    <div class="container bg-light">
+      &copy; WeConnect - Made with <i class="ion-heart"></i> by Emery
+    </div>
+  </footer>
+</body>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</html>
