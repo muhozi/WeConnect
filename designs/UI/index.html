@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create an account - WeConnect</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/ionicons.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+</head>
+<body class="body-img">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-right account-navbar">
+    <div class="container">
+      <a class="navbar-brand logo" href="#">
+        WeConnect
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDropdown" aria-controls="navbarDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarDropdown">
+        <div class="col-md-7 no-padding">
+          <form class="form-inline" method="GET">
+            <div class="input-group col-md-12 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="ion-ios-search-strong"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="Search for business..."/>
+            </div>
+          </form>
+        </div>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Create an account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html">
+                <button class="btn btn-sm btn-secondary sign-btn">Login</button>
+            </a>
+          </li>
+        </ul>  
+      </div>
+    </div>
+  </nav>
+  <section class="content">
+    <div class="container">
+      <div class="row justify-content-end account-card">
+        <div class="col-md-6">
+          <div >
+            <h1 class="text-center text-light" style="font-size: 160px;">
+              <i class="ion-ios-chatbubble-outline"></i>
+            </h1>
+            <p class="text-light text-center">
+              Join WeConnect, and Say something!<br/><br/>
+              Add your business and hear about it
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 no-padding">
+          <div class="card card-form animated fadeIn">
+            <div class="card-header text-center">
+              <h5 class="form-header">Create an account</h5>
+            </div>
+            <div class="card-body">
+              <form method="POST" action="#">
+                <div class="form-group">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="ion-ios-person"></i>
+                      </div>
+                    </div>
+                    <input type="text" name="names" class="form-control" placeholder="Names ..." type="text" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="ion-email"></i>
+                      </div>
+                    </div>
+                    <input type="email" name="email" class="form-control" placeholder="Email ..." type="text" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="ion-ios-unlocked"></i>
+                      </div>
+                    </div>
+                    <input type="password" class="form-control" name="password" placeholder="Password ..." type="text" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="ion-ios-unlocked"></i>
+                      </div>
+                    </div>
+                    <input type="password" class="form-control" name="passwordConfirm" placeholder="Confirm password ..." type="text" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="justify-content-center">
+                    <button type="submit" class="btn btn-secondary btn-block btn-sm">Create account</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-body text-center">
+              <a href="login.html" class="text-secondary">Have an account? Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="text-center text-light">
+    &copy; WeConnect - Made with <i class="ion-heart"></i> by Emery
+  </footer>
+</body>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</html>
