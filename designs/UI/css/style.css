@@ -77,3 +77,14 @@ footer{
 .review:last-child{
   border-bottom: 0;
 }
+.business-div .col-md-10{
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+.filters{
+  padding-top: 9px;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
