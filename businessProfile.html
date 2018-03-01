@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inzora Rooftop Reviews- WeConnect</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/ionicons.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
+</head>
+<body class="dash-body">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-right">
+    <div class="container">
+      <a class="navbar-brand logo" href="index.html">
+        WeConnect
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDropdown" aria-controls="navbarDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarDropdown">
+        <div class="col-md-7 no-padding">
+          <form class="form-inline" action="searchResults.html" method="post">
+            <div class="input-group col-md-12 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="ion-ios-search-strong"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="Search for business..."/>
+            </div>
+          </form>
+        </div>  
+      </div>
+    </div>
+  </nav>
+  <section class="content-body">
+    <div class="container main-body">
+      <div class="row justify-content-center">
+        <div class="col-md-9 body-content">
+            <div class="row">
+              <div class="col-md-3">
+                <img src="img/coffee.jpg" class="img-fluid rounded-circle">
+              </div>
+              <div class="col-md-9">
+                <h3>Inzora roof top coffee</h3>
+                <p>
+                  We have best coffee for you, Come and drink it in the best view of the town.Coffee is a brewed drink prepared from roasted coffee beans, which are the seeds of berries from the Coffea plant
+                </p>
+                <div class="clear">
+                  <div class="d-inline">
+                    <i class="ion-ios-location-outline"></i> Nairobi - Kenya
+                  </div>
+                  <div class="d-inline float-right">
+                    <button class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#reviewModal">
+                      <i class="ion-ios-chatbubble"></i>
+                      Say something about us
+                    </button>
+                    <!-- Write review Modal -->
+                    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h6 class="modal-title" id="reviewModal"> Write your review</h6>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form>
+                                <div class="form-group">
+                                  <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                      <div class="input-group-text">
+                                          <i class="ion-person"></i>
+                                      </div>
+                                    </div>
+                                    <input type="text" name="names" class="form-control" placeholder="Names ...">
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend align-items-start">
+                                      <div class="input-group-text">
+                                          <i class="ion-ios-chatbubble"></i>
+                                      </div>
+                                    </div>
+                                    <textarea name="review" class="form-control review-textarea" placeholder="Write your review about Inzora rooftop coffee ..."></textarea>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                              <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                              <button type="button" class="btn btn-secondary btn-sm">Send my review</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- / Write review modal -->
+                    </div>
+                </div>
+              </div>
+            </div>
+            <hr/>
+            <ul class="list-unstyled">
+              <li class="media review">
+                <div class="mr-3">
+                  <img src="img/user.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Linette Wanjiru</h5>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Curabitur aliquet quam id dui posuere blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus..
+                </div>
+                <div><small>March 1, 2018</small></div>
+              </li>
+              <li class="media review">
+                <div class="mr-3">
+                  <img src="img/user.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Dennis Kings</h5>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Curabitur aliquet quam id dui posuere blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus..
+                </div>
+                <div><small>March 1, 2018</small></div>
+              </li>
+              <li class="media review">
+                <div class="mr-3">
+                  <img src="img/user.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Cyril Obuya</h5>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Curabitur aliquet quam id dui posuere blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus..
+                </div>
+                <div><small>March 1, 2018</small></div>
+              </li>
+              <li class="media review">
+                <div class="mr-3">
+                  <img src="img/user.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Nzivo Eric</h5>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Curabitur aliquet quam id dui posuere blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus..
+                </div>
+                <div><small>March 1, 2018</small></div>
+              </li>
+              <li class="media review">
+                <div class="mr-3">
+                  <img src="img/user.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Doris Mugah</h5>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Curabitur aliquet quam id dui posuere blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus..
+                </div>
+                <div><small>March 1, 2018</small></div>
+              </li>
+              <li class="media review">
+                <div class="mr-3">
+                  <img src="img/user.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Mfalme griffin </h5>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Curabitur aliquet quam id dui posuere blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus..
+                </div>
+                <div><small>March 1, 2018</small></div>
+              </li>
+              <li class="media review">
+                <div class="mr-3">
+                  <img src="img/user.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Mureti Brian</h5>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Curabitur aliquet quam id dui posuere blandit. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus..
+                </div>
+                <div><small>March 1, 2018</small></div>
+              </li>
+            </ul>
+            <nav>
+              <ul class="pagination justify-content-center text-dark">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">1</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+  </section>
+  <footer class="text-center">
+    <div class="container">
+      &copy; WeConnect - Made with <i class="ion-heart"></i> by Emery
+    </div>
+  </footer>
+</body>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</html>
