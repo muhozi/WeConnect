@@ -68,3 +68,12 @@
 footer{
   padding: 20px;
 }
+.review{
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0.8rem;
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.review:last-child{
+  border-bottom: 0;
+}
