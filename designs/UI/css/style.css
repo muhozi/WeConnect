@@ -88,3 +88,13 @@ footer{
   margin-bottom: 15px;
   border-bottom: 1px solid #eee;
 }
+.review-textarea{
+  min-height: 280px;
+  border-bottom-left-radius: .2rem !important;
+}
+#reviewModal .modal-header{
+  border-bottom: none;
+}
+#reviewModal .modal-footer{
+  border-top: none;
+}
