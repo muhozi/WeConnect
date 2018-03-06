@@ -3,15 +3,16 @@
 """
 import unittest
 import uuid
-import json
 from api import app
 from api.models.user import user
+
 
 class main_tests(unittest.TestCase):
     """
         Main test
     """
     url_prefix = '/api/v1/'
+
     def setUp(self):
         """
             Set up tet data
@@ -32,37 +33,65 @@ class main_tests(unittest.TestCase):
             'password': 'secret',
             'confirm_password': 'secret'
         }
-        save_user = user();
+        save_user = user()
         save_user.save({
-            'names':self.sample_user['names'],
-            'email':self.sample_user['email'],
-            'password':self.sample_user['password'],
-            'confirm_password':self.sample_user['confirm_password']
+            'id': self.sample_user['id'],
+            'names': self.sample_user['names'],
+            'email': self.sample_user['email'],
+            'password': self.sample_user['password'],
+            'confirm_password': self.sample_user['confirm_password']
         })
 
     def test_registration(self):
         '''
             Testing registration
         '''
-        response = self.app.post(self.url_prefix+'auth/register',data = {
-            'names':self.exist_user['names'],
-            'email':self.exist_user['email'],
-            'password':self.exist_user['password'],
-            'confirm_password':self.exist_user['confirm_password']
+        # Test registration with complete data
+        response = self.app.post(self.url_prefix + 'auth/register', data={
+            'names': self.exist_user['names'],
+            'email': self.exist_user['email'],
+            'password': self.exist_user['password'],
+            'confirm_password': self.exist_user['confirm_password']
         })
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'have been successfully registered', response.data)
+        # Test registration with incomplete data
+        incomplete_data_response = self.app.post(self.url_prefix + 'auth/register', data={
+            'names': 'dummy name',
+            'confirm_password': self.exist_user['confirm_password']
+        })
+        self.assertEqual(incomplete_data_response.status_code, 400)
+        self.assertIn(b'Please provide', incomplete_data_response.data)
 
     def test_login(self):
         '''
             Testing login
         '''
-        response = self.app.post(self.url_prefix+'auth/login',data = {
-            'email':self.sample_user['email'],
-            'password':self.sample_user['password']
+        wrong_password_response = self.app.post(self.url_prefix + 'auth/login', data={
+            'email': self.sample_user['email'],
+            'password': 'anyinvalidpassword'
         })
+        self.assertEqual(wrong_password_response.status_code, 401)
+        self.assertIn(b'Invalid password', wrong_password_response.data)
+        # Testing for invalid password
+        wrong_creds_response = self.app.post(self.url_prefix + 'auth/login', data={
+            'email': 'anyemail',
+            'password': 'anyinvalidpassword'
+        })
+        self.assertEqual(wrong_creds_response.status_code, 401)
+        self.assertIn(b'Invalid email or password', wrong_creds_response.data)
+        response = self.app.post(self.url_prefix + 'auth/login', data={
+            'email': self.sample_user['email'],
+            'password': self.sample_user['password']
+        })
+        # Test registration with incomplete data
+        incomplete_data_response = self.app.post(self.url_prefix + 'auth/login', data={
+            'email': 'dummy@dummy.com',
+        })
+        self.assertEqual(incomplete_data_response.status_code, 400)
+        self.assertIn(b'Please provide', incomplete_data_response.data)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'welcome', response.data)
+        self.assertIn(b'successfully logged', response.data)
 
 if __name__ == '__main__':
     unittest.main()
