@@ -26,7 +26,7 @@ class main_tests(unittest.TestCase):
             'password': 'secret',
             'confirm_password': 'secret'
         }
-        self.sample_user = {
+        self.exist_user = {
             'names': 'Kudo Kaka',
             'email': 'kaka@andela.com',
             'password': 'secret',
@@ -45,10 +45,10 @@ class main_tests(unittest.TestCase):
             Testing registration
         '''
         response = self.app.post(self.url_prefix+'auth/register',data = {
-            'names':self.sample_user['names'],
-            'email':self.sample_user['email'],
-            'password':self.sample_user['password'],
-            'confirm_password':self.sample_user['confirm_password']
+            'names':self.exist_user['names'],
+            'email':self.exist_user['email'],
+            'password':self.exist_user['password'],
+            'confirm_password':self.exist_user['confirm_password']
         })
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'have been successfully registered', response.data)
