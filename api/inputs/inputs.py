@@ -1,7 +1,7 @@
 """ Validation Classes """
 
 
-class register_inputs():
+class RegisterInputs():
     """ register validation class"""
 
     def __init__(self):
@@ -18,7 +18,7 @@ class register_inputs():
         return False
 
 
-class login_inputs():
+class LoginInputs():
     """Login validation class"""
 
     def __init__(self):

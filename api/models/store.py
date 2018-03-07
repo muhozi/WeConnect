@@ -3,7 +3,7 @@
 """
 
 
-class store():
+class Store():
     """Main store  for storing data"""
     users = []
     businesses = []
