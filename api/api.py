@@ -12,7 +12,7 @@ from api.inputs.inputs import validate, REGISTER_RULES, LOGIN_RULES, RESET_PWD_R
 from api.helpers import get_token, token_id
 
 API = Blueprint('api', 'api', url_prefix='/api/v1/')
-STORE = Store()
+STORE = Store
 
 
 def auth(arg):
@@ -22,7 +22,7 @@ def auth(arg):
         """ Check if token exists in the request header"""
         if request.headers.get('Authorization'):
             token = request.headers.get('Authorization')
-            if User().token_exists(token):
+            if User.token_exists(token):
                 return arg(*args, **kwargs)
         response = jsonify({
             'status': 'error',
@@ -50,14 +50,14 @@ def register():
         'email': request.form['email'],
         'password': request.form['password'],
     }
-    if User().user_exists(data['email']):
+    if User.user_exists(data['email']):
         response = jsonify({
             'status': 'error',
             'message': "Sorry the email address has been taken"
         })
         response.status_code = 400
         return response
-    User().save(data)
+    User.save(data)
     response = jsonify({
         'status': 'ok',
         'message': "You have been successfully registered"
@@ -72,7 +72,7 @@ def logout():
     """
         Logout endpoint
     """
-    Store().remove_token(request.headers.get('Authorization'))
+    Store.remove_token(request.headers.get('Authorization'))
     response = jsonify({
         'status': 'ok',
         'message': "You have successfully logged out"
@@ -96,12 +96,12 @@ def login():
         'password': request.form['password'],
     }
     # Check if email exists in the store
-    logged_user = User().get_user(data['email'])
+    logged_user = User.get_user(data['email'])
     if logged_user:
         # Check password
         if check_password_hash(logged_user['password'], data['password']):
             token = get_token(logged_user['id'])
-            User().add_token(token)
+            User.add_token(token)
             response = jsonify({
                 'status': 'ok',
                 'message': "You have been successfully logged in"
@@ -135,14 +135,14 @@ def reset_password():
         response.status_code = 400
         return response
     user_id = token_id(request.headers.get('Authorization'))
-    if User().check_password(user_id, request.form['old_password']) != True:
+    if User.check_password(user_id, request.form['old_password']) != True:
         response = jsonify({
             'status': 'error',
             'message': "Invalid old password"
         })
         response.status_code = 400
         return response
-    User().change_password(user_id, request.form['new_password'])
+    User.change_password(user_id, request.form['new_password'])
     response = jsonify({
         'status': 'ok',
         'message': "You have successfully changed your password"
@@ -172,12 +172,12 @@ def register_business():
         'country': request.form['country'],
         'city': request.form['city'],
     }
-    if(User().has_business(user_id)):
+    if(User.has_business(user_id)):
         response = jsonify(
             status='error', message="You have already registered a business")
         response.status_code = 400
         return response
-    Business().save(data)
+    Business.save(data)
     response = jsonify({
         'status': 'ok',
         'message': "Your business has been successfully registered"

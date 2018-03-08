@@ -11,14 +11,17 @@ class Store():
     auth_tokens = []  # Authentication tokens staorage list
     # User methods
 
+    @classmethod
     def save_user(self, data):
         """Save user method"""
         self.users.append(data)
 
+    @classmethod
     def save_token(self, token):
         """Save token method"""
         self.auth_tokens.append(token)
 
+    @classmethod
     def update_password(self, id, new_password):
         """Change password"""
         for user in self.users:
@@ -27,10 +30,12 @@ class Store():
                 break
 
     # Business methods
+    @classmethod
     def save_business(self, data):
         """Save user method"""
         self.businesses.append(data)
 
+    @classmethod
     def remove_token(self, token):
         """Save user method"""
         self.auth_tokens.remove(token)

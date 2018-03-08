@@ -2,10 +2,12 @@
 from api.validations import Validations
 # Registration validations
 REGISTER_RULES = [
-    {'username': [('string', True), ('min', 4), ('required', True)]},
-    {'email': [('min', 6), ('required', True)]},
-    {'password': [('min', 6), ('required', True)]},
-    {'confirm_password': [('min', 6), ('required', True)]},
+    {'username': [('string', True), ('min', 4),
+                  ('max', 30), ('required', True)]},
+    {'email': [('min', 6), ('max', 30), ('required', True), ('email', True)]},
+    {'password': [('min', 6), ('max', 30), ('required', True)]},
+    {'confirm_password': [('min', 6), ('max', 30),
+                          ('required', True), ('same', 'password')]},
 ]
 # Login validation
 LOGIN_RULES = [
@@ -14,8 +16,8 @@ LOGIN_RULES = [
 ]
 # Reset password validations
 RESET_PWD_RULES = [
-    {'new_password': [('min', 6), ('required', True)]},
-    {'old_password': [('min', 6), ('required', True)]},
+    {'new_password': [('min', 6), ('max', 30), ('required', True)]},
+    {'old_password': [('min', 6), ('max', 30), ('required', True)]},
 ]
 # Register business validation rules
 REGISTER_BUSINESS_RULES = [
