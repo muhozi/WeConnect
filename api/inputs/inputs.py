@@ -7,7 +7,7 @@ REGISTER_RULES = [
     {'password': [('min', 6), ('required', True)]},
     {'confirm_password': [('min', 6), ('required', True)]},
 ]
-# Login validations
+# Login validation
 LOGIN_RULES = [
     {'email': [('min', 6), ('required', True)]},
     {'password': [('min', 6), ('required', True)]},
@@ -16,6 +16,13 @@ LOGIN_RULES = [
 RESET_PWD_RULES = [
     {'new_password': [('min', 6), ('required', True)]},
     {'old_password': [('min', 6), ('required', True)]},
+]
+# Register business validation rules
+REGISTER_BUSINESS_RULES = [
+    {'name': [('min', 2), ('required', True)]},
+    {'description': [('min', 6), ('required', True)]},
+    {'country': [('min', 4), ('required', True)]},
+    {'city': [('min', 6), ('required', True)]},
 ]
 
 

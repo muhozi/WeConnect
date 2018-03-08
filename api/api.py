@@ -7,7 +7,7 @@ from flask import Blueprint, jsonify, request
 from werkzeug.security import check_password_hash
 from api.models.store import Store
 from api.models.user import User
-from api.inputs.inputs import validate, REGISTER_RULES, LOGIN_RULES, RESET_PWD_RULES
+from api.inputs.inputs import validate, REGISTER_RULES, LOGIN_RULES, RESET_PWD_RULES, REGISTER_BUSINESS_RULES
 from api.helpers import get_token, token_id
 
 API = Blueprint('api', 'api', url_prefix='/api/v1/')

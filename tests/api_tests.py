@@ -142,5 +142,46 @@ class MainTests(unittest.TestCase):
         self.assertIn(
             b'You have successfully changed your password', response.data)
 
+    def test_business_registration(self):
+        '''
+            Testing business registration
+        '''
+        response = self.app.post(self.url_prefix + 'businesses', data={
+            'name': 'Inzora rooftop coffee',
+            'description': 'We have best coffee for you, Come and drink it in the best view of the town',
+            'country': 'Kenya',
+            'city': 'Nairobi'
+        }, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 201)
+        self.assertIn(
+            b'business has been successfully registered', response.data)
+
+    def test_business_owner_business_registration(self):
+        '''
+            Testing business registration with by existing business owner
+        '''
+        response = self.app.post(self.url_prefix + 'businesses', data={
+            'name': 'Inzora rooftop coffee',
+            'description': 'We have best coffee for you, Come and drink it in the best view of the town',
+            'country': 'Kenya',
+            'city': 'Nairobi'
+        }, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 201)
+        self.assertIn(
+            b'You have already registered business', response.data)
+
+    def test_business_with_invalid_data(self):
+        '''
+            Testing business registration with invalid data
+        '''
+        response = self.app.post(self.url_prefix + 'businesses', data={
+            'description': 'We have best coffee for you, Come and drink it in the best view of the town',
+            'country': 'Kenya',
+            'city': 'Nairobi'
+        }, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 201)
+        self.assertIn(
+            b'Please provide required info', response.data)
+
 if __name__ == '__main__':
     unittest.main()
