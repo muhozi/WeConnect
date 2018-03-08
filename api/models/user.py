@@ -1,6 +1,6 @@
 """ User Model """
 
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from api.models.store import Store
 
 
@@ -36,3 +36,16 @@ class User(object):
             if token == user_token:
                 return True
         return False
+
+    def check_password(self, id, readable_password):
+        """ Check if password """
+        for user in Store().users:
+            if user['id'] == id:
+                if check_password_hash(user['password'], readable_password):
+                    return True
+        return False
+
+    def change_password(self, id, password):
+        """ Update user password """
+        password = generate_password_hash(password)
+        Store().update_password(id, password)

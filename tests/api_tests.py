@@ -5,6 +5,7 @@ import unittest
 import uuid
 from api import APP
 from api.models.user import User
+from api.helpers import get_token
 
 
 class MainTests(unittest.TestCase):
@@ -22,13 +23,13 @@ class MainTests(unittest.TestCase):
 
         self.sample_user = {
             'id': uuid.uuid4().hex,
-            'names': 'Muhozi Emery',
+            'names': 'Muhozi',
             'email': 'emery@andela.com',
             'password': 'secret',
             'confirm_password': 'secret'
         }
         self.exist_user = {
-            'names': 'Kudo Kaka',
+            'names': 'Kudo',
             'email': 'kaka@andela.com',
             'password': 'secret',
             'confirm_password': 'secret'
@@ -41,6 +42,12 @@ class MainTests(unittest.TestCase):
             'password': self.sample_user['password'],
             'confirm_password': self.sample_user['confirm_password']
         })
+        with APP.test_request_context():
+            # Issue a token the the test user (smaple_user)
+            token = get_token(self.sample_user['id'])
+            # Store test token in auth storage auth_token list
+            User().add_token(get_token(self.sample_user['id']))
+            self.test_token = get_token(self.sample_user['id'])
 
     def test_registration(self):
         '''
@@ -57,7 +64,7 @@ class MainTests(unittest.TestCase):
 
     def test_exist_email(self):
         '''
-            Testing registration
+            Testing registration with exist email
         '''
         response = self.app.post(self.url_prefix + 'auth/register', data={
             'names': self.exist_user['names'],
@@ -121,6 +128,19 @@ class MainTests(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'Please provide', response.data)
+
+    def test_password_reset(self):
+        """
+            Testing password Reset
+        """
+        response = self.app.post(self.url_prefix + 'auth/reset-password', data={
+            'old_password': self.sample_user['password'],  # Old password
+            'new_password': '123456',
+        },
+            headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 201)
+        self.assertIn(
+            b'You have successfully changed your password', response.data)
 
 if __name__ == '__main__':
     unittest.main()
