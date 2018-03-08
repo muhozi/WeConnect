@@ -1,32 +1,42 @@
-""" Validation Classes """
+""" Input Validation Classes """
+from api.validations import Validations
+# Registration validations
+REGISTER_RULES = [
+    {'names': [('string', True), ('min', 4), ('required', True)]},
+    {'email': [('min', 6), ('required', True)]},
+    {'password': [('min', 6), ('required', True)]},
+    {'confirm_password': [('min', 6), ('required', True)]},
+]
+# Login validations
+LOGIN_RULES = [
+    {'email': [('min', 6), ('required', True)]},
+    {'password': [('min', 6), ('required', True)]},
+]
+# Reset password validations
+RESET_PWD_RULES = [
+    {'new_password': [('min', 6), ('required', True)]},
+    {'old_password': [('min', 6), ('required', True)]},
+]
 
 
-class RegisterInputs():
-    """ register validation class"""
-
-    def __init__(self):
-        self.error = ''
-
-    def validate(self, inputs):
-        """ Register validation method """
-        if ('names' in inputs and
-                'email' in inputs and
-                'password' in inputs and
-                'confirm_password' in inputs):
-            return True
-        self.error = 'Please provide all the required data'
-        return False
-
-
-class LoginInputs():
-    """Login validation class"""
-
-    def __init__(self):
-        self.error = ''
-
-    def validate(self, inputs):
-        """ Register validation method """
-        if 'email' in inputs and 'password' in inputs:
-            return True
-        self.error = 'Please provide email and password to login'
-        return False
+def validate(inputs, all_rules):
+    """ Register validation method """
+    error_bag = {}
+    valid = Validations(inputs)
+    for rules in all_rules:
+        for key in rules:
+            rule_key = key
+            for rule in rules[rule_key]:
+                execute = getattr(valid, rule[0])(
+                    rule_key, rule[1])
+                if execute is True:
+                    pass
+                if execute != True:
+                    if rule_key in error_bag:
+                        error_bag[rule_key].append(execute)
+                    else:
+                        error_bag[rule_key] = []
+                        error_bag[rule_key].append(execute)
+    if len(error_bag) > 0:
+        return error_bag
+    return True
