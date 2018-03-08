@@ -39,3 +39,8 @@ class Store():
     def remove_token(self, token):
         """Save user method"""
         self.auth_tokens.remove(token)
+
+    @classmethod
+    def delete_business(self,business_id):
+        self.businesses[:] = [
+            business for business in self.businesses if business.get('id') != business_id]

@@ -80,6 +80,7 @@ def logout():
     response.status_code = 200
     return response
 
+
 @API.route('auth/login', methods=['POST'])
 def login():
     """
@@ -155,7 +156,7 @@ def reset_password():
 @auth
 def register_business():
     """
-        Registration endpoint method
+        Business registration endpoint endpoint method
     """
     valid = validate(request.form, REGISTER_BUSINESS_RULES)
     if valid != True:
@@ -172,9 +173,9 @@ def register_business():
         'country': request.form['country'],
         'city': request.form['city'],
     }
-    if(User.has_business(user_id)):
+    if(Business.has_same_business(user_id, request.form['name'])):
         response = jsonify(
-            status='error', message="You have already registered a business")
+            status='error', message="You have already registered this business")
         response.status_code = 400
         return response
     Business.save(data)
@@ -183,4 +184,26 @@ def register_business():
         'message': "Your business has been successfully registered"
     })
     response.status_code = 201
+    return response
+
+
+@API.route('businesses/<id>', methods=['DELETE'])
+@auth
+def delete_business(id):
+    """
+        Business deletion endpoint method
+    """
+    user_id = token_id(request.headers.get('Authorization'))
+    print(id)
+    if(Business.has_this_business(user_id, id)):
+        Business.delete_business(id)
+        response = jsonify({
+            'status': 'ok',
+            'message': "Your business has been successfully deleted"
+        })
+        response.status_code = 202
+        return response
+    response = jsonify(
+        status='error', message="This business doesn't exist")
+    response.status_code = 400
     return response

@@ -36,6 +36,7 @@ class MainTests(unittest.TestCase):
             'confirm_password': 'secret'
         }
         self.business_data = {
+            'id': uuid.uuid4().hex,
             'name': 'Inzora rooftop coffee',
             'description': 'We have best coffee for you, Come and drink it in the best view of the town',
             'country': 'Kenya',
@@ -183,7 +184,7 @@ class MainTests(unittest.TestCase):
                                  data=self.business_data, headers={'Authorization': self.test_token})
         self.assertEqual(response.status_code, 400)
         self.assertIn(
-            b'You have already registered a business', response.data)
+            b'You have already registered this business', response.data)
 
     def test_business_with_invalid_data(self):
         '''
@@ -197,6 +198,20 @@ class MainTests(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'Please provide required info', response.data)
+
+    def test_business_deletion(self):
+        '''
+            Test deleting business
+        '''
+        # Add user(owner) to the business data dict
+        self.business_data['user_id'] = self.sample_user['id']
+        # Save business in the storage list for testing
+        Business.save(self.business_data)
+        response = self.app.delete(self.url_prefix + 'businesses/' + self.business_data[
+                                   'id'], data={}, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 202)
+        self.assertIn(
+            b'Your business has been successfully deleted', response.data)
 
 if __name__ == '__main__':
     unittest.main()
