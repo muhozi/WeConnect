@@ -7,6 +7,7 @@ from flask import Blueprint, jsonify, request
 from werkzeug.security import check_password_hash
 from api.models.store import Store
 from api.models.user import User
+from api.models.business import Business
 from api.inputs.inputs import validate, REGISTER_RULES, LOGIN_RULES, RESET_PWD_RULES, REGISTER_BUSINESS_RULES
 from api.helpers import get_token, token_id
 
@@ -45,7 +46,7 @@ def register():
         return response
     data = {
         'id': uuid.uuid4().hex,
-        'names': request.form['names'],
+        'username': request.form['username'],
         'email': request.form['email'],
         'password': request.form['password'],
     }
@@ -64,6 +65,20 @@ def register():
     response.status_code = 201
     return response
 
+
+@API.route('auth/logout', methods=['POST'])
+@auth
+def logout():
+    """
+        Logout endpoint
+    """
+    Store().remove_token(request.headers.get('Authorization'))
+    response = jsonify({
+        'status': 'ok',
+        'message': "You have successfully logged out"
+    })
+    response.status_code = 200
+    return response
 
 @API.route('auth/login', methods=['POST'])
 def login():
@@ -131,6 +146,41 @@ def reset_password():
     response = jsonify({
         'status': 'ok',
         'message': "You have successfully changed your password"
+    })
+    response.status_code = 201
+    return response
+
+
+@API.route('businesses', methods=['POST'])
+@auth
+def register_business():
+    """
+        Registration endpoint method
+    """
+    valid = validate(request.form, REGISTER_BUSINESS_RULES)
+    if valid != True:
+        response = jsonify(
+            status='error', message="Please provide required info", errors=valid)
+        response.status_code = 400
+        return response
+    user_id = token_id(request.headers.get('Authorization'))
+    data = {
+        'id': uuid.uuid4(),
+        'user_id': user_id,
+        'name': request.form['name'],
+        'description': request.form['description'],
+        'country': request.form['country'],
+        'city': request.form['city'],
+    }
+    if(User().has_business(user_id)):
+        response = jsonify(
+            status='error', message="You have already registered a business")
+        response.status_code = 400
+        return response
+    Business().save(data)
+    response = jsonify({
+        'status': 'ok',
+        'message': "Your business has been successfully registered"
     })
     response.status_code = 201
     return response

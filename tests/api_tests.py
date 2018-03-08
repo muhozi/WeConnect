@@ -5,6 +5,7 @@ import unittest
 import uuid
 from api import APP
 from api.models.user import User
+from api.models.business import Business
 from api.helpers import get_token
 
 
@@ -23,21 +24,27 @@ class MainTests(unittest.TestCase):
 
         self.sample_user = {
             'id': uuid.uuid4().hex,
-            'names': 'Muhozi',
+            'username': 'Muhozi',
             'email': 'emery@andela.com',
             'password': 'secret',
             'confirm_password': 'secret'
         }
         self.exist_user = {
-            'names': 'Kudo',
+            'username': 'Kudo',
             'email': 'kaka@andela.com',
             'password': 'secret',
             'confirm_password': 'secret'
         }
+        self.business_data = {
+            'name': 'Inzora rooftop coffee',
+            'description': 'We have best coffee for you, Come and drink it in the best view of the town',
+            'country': 'Kenya',
+            'city': 'Nairobi'
+        }
         save_user = User()
         save_user.save({
             'id': self.sample_user['id'],
-            'names': self.sample_user['names'],
+            'username': self.sample_user['username'],
             'email': self.sample_user['email'],
             'password': self.sample_user['password'],
             'confirm_password': self.sample_user['confirm_password']
@@ -54,7 +61,7 @@ class MainTests(unittest.TestCase):
             Testing registration
         '''
         response = self.app.post(self.url_prefix + 'auth/register', data={
-            'names': self.exist_user['names'],
+            'username': self.exist_user['username'],
             'email': self.exist_user['email'],
             'password': self.exist_user['password'],
             'confirm_password': self.exist_user['confirm_password']
@@ -67,7 +74,7 @@ class MainTests(unittest.TestCase):
             Testing registration with exist email
         '''
         response = self.app.post(self.url_prefix + 'auth/register', data={
-            'names': self.exist_user['names'],
+            'username': self.exist_user['username'],
             'email': self.sample_user['email'],
             'password': self.exist_user['password'],
             'confirm_password': self.exist_user['confirm_password']
@@ -80,7 +87,7 @@ class MainTests(unittest.TestCase):
             Test registration with incomplete data
         """
         response = self.app.post(self.url_prefix + 'auth/register', data={
-            'names': 'dummy name',
+            'username': 'dummy name',
             'confirm_password': self.exist_user['confirm_password']
         })
         self.assertEqual(response.status_code, 400)
@@ -129,6 +136,15 @@ class MainTests(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'Please provide', response.data)
 
+    def test_logout(self):
+        """
+            Test Logout
+        """
+        response = self.app.post(self.url_prefix + 'auth/logout',
+                                 data={}, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'You have successfully logged out', response.data)
+
     def test_password_reset(self):
         """
             Testing password Reset
@@ -160,15 +176,14 @@ class MainTests(unittest.TestCase):
         '''
             Testing business registration with by existing business owner
         '''
-        response = self.app.post(self.url_prefix + 'businesses', data={
-            'name': 'Inzora rooftop coffee',
-            'description': 'We have best coffee for you, Come and drink it in the best view of the town',
-            'country': 'Kenya',
-            'city': 'Nairobi'
-        }, headers={'Authorization': self.test_token})
-        self.assertEqual(response.status_code, 201)
+        data = self.business_data
+        data['user_id'] = self.sample_user['id']
+        Business().save(self.business_data)  # Save business assigned to sample user
+        response = self.app.post(self.url_prefix + 'businesses',
+                                 data=self.business_data, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 400)
         self.assertIn(
-            b'You have already registered business', response.data)
+            b'You have already registered a business', response.data)
 
     def test_business_with_invalid_data(self):
         '''
@@ -179,7 +194,7 @@ class MainTests(unittest.TestCase):
             'country': 'Kenya',
             'city': 'Nairobi'
         }, headers={'Authorization': self.test_token})
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'Please provide required info', response.data)
 

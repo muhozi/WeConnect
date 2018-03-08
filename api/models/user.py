@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from api.models.store import Store
 
 
-class User(object):
+class User(Store):
     """Users Model"""
 
     def save(self, data):
@@ -49,3 +49,10 @@ class User(object):
         """ Update user password """
         password = generate_password_hash(password)
         Store().update_password(id, password)
+
+    def has_business(self, user_id):
+        """Check if user has business """
+        for user_ in Store().businesses:
+            if user_['user_id'] == user_id:
+                return True
+        return False

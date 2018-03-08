@@ -2,7 +2,7 @@
 from api.validations import Validations
 # Registration validations
 REGISTER_RULES = [
-    {'names': [('string', True), ('min', 4), ('required', True)]},
+    {'username': [('string', True), ('min', 4), ('required', True)]},
     {'email': [('min', 6), ('required', True)]},
     {'password': [('min', 6), ('required', True)]},
     {'confirm_password': [('min', 6), ('required', True)]},

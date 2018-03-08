@@ -5,10 +5,11 @@
 
 class Store():
     """Main store  for storing data"""
-    users = []
-    businesses = []
-    reviews = []
-    auth_tokens = []
+    users = []  # Users storage list
+    businesses = []  # Businesses storage list
+    reviews = []  # Reviews storage list
+    auth_tokens = []  # Authentication tokens staorage list
+    # User methods
 
     def save_user(self, data):
         """Save user method"""
@@ -24,3 +25,12 @@ class Store():
             if user['id'] == id:
                 user['password'] = new_password
                 break
+
+    # Business methods
+    def save_business(self, data):
+        """Save user method"""
+        self.businesses.append(data)
+
+    def remove_token(self, token):
+        """Save user method"""
+        self.auth_tokens.remove(token)
