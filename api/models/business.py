@@ -24,11 +24,23 @@ class Business():
         return False
 
     @classmethod
+    def has_business(self, user_id):
+        for business in Store.businesses:
+            if business['user_id'] == user_id:
+                return True
+        return False
+
+    @classmethod
     def has_this_business(self, user_id, business_id):
         for business in Store.businesses:
             if business['user_id'] == user_id and business['id'] == business_id:
                 return True
         return False
+
+    @classmethod
+    def user_businesses(self, user_id):
+       	businesses_owned = [business for business in Store.businesses if business['user_id']==user_id]
+        return businesses_owned
 
     @classmethod
     def delete_business(self, id):

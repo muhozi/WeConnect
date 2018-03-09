@@ -23,6 +23,7 @@ def auth(arg):
         if request.headers.get('Authorization'):
             token = request.headers.get('Authorization')
             if User.token_exists(token) and token_id(token):
+                print(token_id(token))
                 return arg(*args, **kwargs)
         response = jsonify({
             'status': 'error',
@@ -166,7 +167,7 @@ def register_business():
         return response
     user_id = token_id(request.headers.get('Authorization'))
     data = {
-        'id': uuid.uuid4(),
+        'id': uuid.uuid4().hex,
         'user_id': user_id,
         'name': request.form['name'],
         'description': request.form['description'],
@@ -243,5 +244,26 @@ def update_business(id):
         return response
     response = jsonify(
         status='error', message="This business doesn't exist")
+    response.status_code = 400
+    return response
+
+@API.route('businesses', methods=['GET'])
+@auth
+def get_user_businesses():
+    """
+        Business updating endpoint method
+    """
+    user_id = token_id(request.headers.get('Authorization'))
+    if(Business.has_business(user_id)):
+        businesses = Business.user_businesses(user_id)
+        response = jsonify({
+            'status': 'ok',
+            'message': 'You have businesses'+ str(len(businesses)) +'registered businesses',
+            'businesses': businesses
+        })
+        response.status_code = 200
+        return response
+    response = jsonify(
+        status='error', message="You don't have registered business")
     response.status_code = 400
     return response

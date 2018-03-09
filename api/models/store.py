@@ -48,13 +48,9 @@ class Store():
     @classmethod
     def update_business(self, id, data):
         """Update business method"""
-        print("Before")
-        print(self.businesses)
         for key in range(0, len(self.businesses)):
             if self.businesses[key]['id'] == id:
                 data['id'] = id # Append existing business id to the data
                 self.businesses[key] = data
                 break
-        print("Before")
-        print(self.businesses)
 
