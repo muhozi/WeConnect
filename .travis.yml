@@ -15,3 +15,4 @@ script:
 
 after_sucess:
   - "coveralls"
+  - "coverage xml"

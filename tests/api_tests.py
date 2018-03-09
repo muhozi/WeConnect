@@ -4,6 +4,7 @@
 import unittest
 import uuid
 from api import APP
+from flask import json
 from api.models.user import User
 from api.models.business import Business
 from api.helpers import get_token
@@ -61,12 +62,12 @@ class MainTests(unittest.TestCase):
         '''
             Testing registration
         '''
-        response = self.app.post(self.url_prefix + 'auth/register', data={
+        response = self.app.post(self.url_prefix + 'auth/register', data=json.dumps({
             'username': self.exist_user['username'],
             'email': self.exist_user['email'],
             'password': self.exist_user['password'],
             'confirm_password': self.exist_user['confirm_password']
-        })
+        }), content_type='application/json')
         self.assertEqual(response.status_code, 201)
         self.assertIn(b'have been successfully registered', response.data)
 
@@ -74,12 +75,12 @@ class MainTests(unittest.TestCase):
         '''
             Testing registration with exist email
         '''
-        response = self.app.post(self.url_prefix + 'auth/register', data={
+        response = self.app.post(self.url_prefix + 'auth/register', data=json.dumps({
             'username': self.exist_user['username'],
             'email': self.sample_user['email'],
             'password': self.exist_user['password'],
             'confirm_password': self.exist_user['confirm_password']
-        })
+        }), content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'Sorry the email address has been taken', response.data)
 
@@ -87,10 +88,10 @@ class MainTests(unittest.TestCase):
         """
             Test registration with incomplete data
         """
-        response = self.app.post(self.url_prefix + 'auth/register', data={
+        response = self.app.post(self.url_prefix + 'auth/register', data=json.dumps({
             'username': 'dummy name',
             'confirm_password': self.exist_user['confirm_password']
-        })
+        }), content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'Please provide', response.data)
 
@@ -98,10 +99,10 @@ class MainTests(unittest.TestCase):
         """
             Testing login
         """
-        response = self.app.post(self.url_prefix + 'auth/login', data={
+        response = self.app.post(self.url_prefix + 'auth/login', data=json.dumps({
             'email': self.sample_user['email'],
             'password': self.sample_user['password']
-        })
+        }), content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'successfully logged', response.data)
 
@@ -109,10 +110,10 @@ class MainTests(unittest.TestCase):
         """
             Testing for invalid password
         """
-        response = self.app.post(self.url_prefix + 'auth/login', data={
+        response = self.app.post(self.url_prefix + 'auth/login', data=json.dumps({
             'email': self.sample_user['email'],
             'password': 'anyinvalidpassword'
-        })
+        }), content_type='application/json')
         self.assertEqual(response.status_code, 401)
         self.assertIn(b'Invalid password', response.data)
 
@@ -120,10 +121,10 @@ class MainTests(unittest.TestCase):
         """
             Testing for invalid credentials
         """
-        response = self.app.post(self.url_prefix + 'auth/login', data={
+        response = self.app.post(self.url_prefix + 'auth/login', data=json.dumps({
             'email': 'anyemail',
             'password': 'anyinvalidpassword'
-        })
+        }), content_type='application/json')
         self.assertEqual(response.status_code, 401)
         self.assertIn(b'Invalid email or password', response.data)
 
@@ -131,9 +132,9 @@ class MainTests(unittest.TestCase):
         """
             Test registration with incomplete data
         """
-        response = self.app.post(self.url_prefix + 'auth/login', data={
+        response = self.app.post(self.url_prefix + 'auth/login', data=json.dumps({
             'email': 'dummy@dummy.com',
-        })
+        }), content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'Please provide', response.data)
 
@@ -150,10 +151,10 @@ class MainTests(unittest.TestCase):
         """
             Testing password Reset
         """
-        response = self.app.post(self.url_prefix + 'auth/reset-password', data={
+        response = self.app.post(self.url_prefix + 'auth/reset-password', data=json.dumps({
             'old_password': self.sample_user['password'],  # Old password
             'new_password': '123456',
-        },
+        }), content_type='application/json',
             headers={'Authorization': self.test_token})
         self.assertEqual(response.status_code, 201)
         self.assertIn(
@@ -178,12 +179,12 @@ class MainTests(unittest.TestCase):
         '''
             Testing business registration
         '''
-        response = self.app.post(self.url_prefix + 'businesses', data={
+        response = self.app.post(self.url_prefix + 'businesses', data=json.dumps({
             'name': 'Inzora rooftop coffee',
             'description': 'We have best coffee',
             'country': 'Kenya',
             'city': 'Nairobi'
-        }, headers={'Authorization': self.test_token})
+        }), headers={'Authorization': self.test_token})
         self.assertEqual(response.status_code, 201)
         self.assertIn(
             b'business has been successfully registered', response.data)
@@ -196,7 +197,8 @@ class MainTests(unittest.TestCase):
         data['user_id'] = self.sample_user['id']
         Business().save(self.business_data)  # Save business assigned to sample user
         response = self.app.post(self.url_prefix + 'businesses',
-                                 data=self.business_data, headers={'Authorization': self.test_token})
+                                 data=json.dumps(self.business_data),
+                                 headers={'Authorization': self.test_token}, content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'You have already registered this business', response.data)
@@ -205,11 +207,11 @@ class MainTests(unittest.TestCase):
         '''
             Testing business registration with invalid data
         '''
-        response = self.app.post(self.url_prefix + 'businesses', data={
+        response = self.app.post(self.url_prefix + 'businesses', data=json.dumps({
             'description': 'We have best coffee for you, Come and drink it in the best view of the town',
             'country': 'Kenya',
             'city': 'Nairobi'
-        }, headers={'Authorization': self.test_token})
+        }), headers={'Authorization': self.test_token}, content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'Please provide required info', response.data)
@@ -223,7 +225,7 @@ class MainTests(unittest.TestCase):
         # Save business in the storage list for testing
         Business.save(self.business_data)
         response = self.app.delete(self.url_prefix + 'businesses/' + self.business_data[
-                                   'id'], data={}, headers={'Authorization': self.test_token})
+            'id'], data={}, headers={'Authorization': self.test_token})
         self.assertEqual(response.status_code, 202)
         self.assertIn(
             b'Your business has been successfully deleted', response.data)
@@ -244,7 +246,7 @@ class MainTests(unittest.TestCase):
         # Save business in the storage list for testing
         Business.save(self.business_data)
         response = self.app.put(self.url_prefix + 'businesses/' + self.business_data[
-            'id'], data=new_business_data, headers={'Authorization': self.test_token})
+            'id'], data=json.dumps(new_business_data), headers={'Authorization': self.test_token})
         self.assertEqual(response.status_code, 202)
         self.assertIn(
             b'Your business has been successfully updated', response.data)
@@ -275,7 +277,9 @@ class MainTests(unittest.TestCase):
         Business.save(self.business_data)
         Business.save(additional_business_data)
         response = self.app.put(self.url_prefix + 'businesses/' +
-                                self.business_data['id'], data=new_business_data, headers={'Authorization': self.test_token})
+                                self.business_data['id'], data=json.dumps(
+                                    new_business_data),
+                                headers={'Authorization': self.test_token}, content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'You have already registered this other business with same name', response.data)
@@ -295,7 +299,8 @@ class MainTests(unittest.TestCase):
         # Save business in the storage list for testing
         Business.save(self.business_data)
         response = self.app.put(self.url_prefix + 'businesses/' + self.business_data[
-            'id'], data=new_business_data, headers={'Authorization': self.test_token})
+            'id'], data=json.dumps(new_business_data), headers={'Authorization': self.test_token},
+            content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'Please provide required info', response.data)

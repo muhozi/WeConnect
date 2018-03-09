@@ -24,7 +24,6 @@ def auth(arg):
         if request.headers.get('Authorization'):
             token = request.headers.get('Authorization')
             if User.token_exists(token) and token_id(token):
-                print(token_id(token))
                 return arg(*args, **kwargs)
         response = jsonify({
             'status': 'error',
@@ -40,7 +39,8 @@ def register():
     """
         Registration endpoint method
     """
-    valid = validate(request.form, REGISTER_RULES)
+    valid = validate(request.get_json(force=True), REGISTER_RULES)
+    sent_data = request.get_json(force=True)
     if valid != True:
         response = jsonify(
             status='error', message="Please provide valid details", errors=valid)
@@ -48,9 +48,9 @@ def register():
         return response
     data = {
         'id': uuid.uuid4().hex,
-        'username': request.form['username'],
-        'email': request.form['email'],
-        'password': request.form['password'],
+        'username': sent_data['username'],
+        'email': sent_data['email'],
+        'password': sent_data['password'],
     }
     if User.user_exists(data['email']):
         response = jsonify({
@@ -88,15 +88,16 @@ def login():
     """
         Login endpoint method
     """
-    valid = validate(request.form, LOGIN_RULES)
+    sent_data = request.get_json(force=True)
+    valid = validate(sent_data, LOGIN_RULES)
     if valid != True:
         response = jsonify(
             status='error', message="Please provide valid details", errors=valid)
         response.status_code = 400
         return response
     data = {
-        'email': request.form['email'],
-        'password': request.form['password'],
+        'email': sent_data['email'],
+        'password': sent_data['password'],
     }
     # Check if email exists in the store
     logged_user = User.get_user(data['email'])
@@ -132,20 +133,21 @@ def reset_password():
     """
         Registration endpoint method
     """
-    valid = validate(request.form, RESET_PWD_RULES)
+    sent_data = request.get_json(force=True)
+    valid = validate(sent_data, RESET_PWD_RULES)
     if valid != True:
         response = jsonify(status='error', message=valid)
         response.status_code = 400
         return response
     user_id = token_id(request.headers.get('Authorization'))
-    if User.check_password(user_id, request.form['old_password']) != True:
+    if User.check_password(user_id, sent_data['old_password']) != True:
         response = jsonify({
             'status': 'error',
             'message': "Invalid old password"
         })
         response.status_code = 400
         return response
-    User.change_password(user_id, request.form['new_password'])
+    User.change_password(user_id, sent_data['new_password'])
     response = jsonify({
         'status': 'ok',
         'message': "You have successfully changed your password"
@@ -160,7 +162,8 @@ def register_business():
     """
         Business registration endpoint endpoint method
     """
-    valid = validate(request.form, REGISTER_BUSINESS_RULES)
+    sent_data = request.get_json(force=True)
+    valid = validate(sent_data, REGISTER_BUSINESS_RULES)
     if valid != True:
         response = jsonify(
             status='error', message="Please provide required info", errors=valid)
@@ -170,12 +173,12 @@ def register_business():
     data = {
         'id': uuid.uuid4().hex,
         'user_id': user_id,
-        'name': request.form['name'],
-        'description': request.form['description'],
-        'country': request.form['country'],
-        'city': request.form['city'],
+        'name': sent_data['name'],
+        'description': sent_data['description'],
+        'country': sent_data['country'],
+        'city': sent_data['city'],
     }
-    if Business.has_same_business(user_id, request.form['name']):
+    if Business.has_same_business(user_id, sent_data['name']):
         response = jsonify(
             status='error', message="You have already registered this business")
         response.status_code = 400
@@ -216,9 +219,10 @@ def update_business(id):
     """
         Business updating endpoint method
     """
+    sent_data = request.get_json(force=True)
     user_id = token_id(request.headers.get('Authorization'))
     if(Business.has_this_business(user_id, id)):
-        valid = validate(request.form, REGISTER_BUSINESS_RULES)
+        valid = validate(sent_data, REGISTER_BUSINESS_RULES)
         if valid != True:
             response = jsonify(
                 status='error', message="Please provide required info", errors=valid)
@@ -226,12 +230,12 @@ def update_business(id):
             return response
         data = {
             'user_id': user_id,
-            'name': request.form['name'],
-            'description': request.form['description'],
-            'country': request.form['country'],
-            'city': request.form['city'],
+            'name': sent_data['name'],
+            'description': sent_data['description'],
+            'country': sent_data['country'],
+            'city': sent_data['city'],
         }
-        if Business.has_two_same_business(user_id, request.form['name'], id):
+        if Business.has_two_same_business(user_id, sent_data['name'], id):
             response = jsonify(
                 status='error',
                 message="You have already registered this other business with same name")
