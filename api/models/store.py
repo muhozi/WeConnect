@@ -12,45 +12,46 @@ class Store():
     # User methods
 
     @classmethod
-    def save_user(self, data):
+    def save_user(cls, data):
         """Save user method"""
-        self.users.append(data)
+        cls.users.append(data)
 
     @classmethod
-    def save_token(self, token):
+    def save_token(cls, token):
         """Save token method"""
-        self.auth_tokens.append(token)
+        cls.auth_tokens.append(token)
 
     @classmethod
-    def update_password(self, id, new_password):
+    def update_password(cls, user_id, new_password):
         """Change password"""
-        for user in self.users:
-            if user['id'] == id:
+        for user in cls.users:
+            if user['id'] == user_id:
                 user['password'] = new_password
                 break
 
     # Business methods
     @classmethod
-    def save_business(self, data):
+    def save_business(cls, data):
         """Save business method"""
-        self.businesses.append(data)
+        cls.businesses.append(data)
 
     @classmethod
-    def remove_token(self, token):
+    def remove_token(cls, token):
         """Remove auth token method"""
-        self.auth_tokens.remove(token)
+        cls.auth_tokens.remove(token)
 
     @classmethod
-    def delete_business(self, business_id):
-        self.businesses[:] = [
-            business for business in self.businesses if business.get('id') != business_id]
+    def delete_business(cls, business_id):
+        """ Delete business"""
+        cls.businesses[:] = [
+            business for business in cls.businesses if business.get('id') != business_id]
 
     @classmethod
-    def update_business(self, id, data):
+    def update_business(cls, business_id, data):
         """Update business method"""
-        for key in range(0, len(self.businesses)):
-            if self.businesses[key]['id'] == id:
-                data['id'] = id # Append existing business id to the data
-                self.businesses[key] = data
+        for key in range(0, len(cls.businesses)):
+            if cls.businesses[key]['id'] == business_id:
+                # Append existing business id to the data
+                data['id'] = business_id
+                cls.businesses[key] = data
                 break
-

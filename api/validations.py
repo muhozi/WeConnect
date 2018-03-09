@@ -24,7 +24,7 @@ class Validations():
             return True
         return True
 
-    def max(self, key, max):
+    def maximum(self, key, max):
         """Check required character size"""
         if key in self.all:
             if len(self.all[key]) > int(max):

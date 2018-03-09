@@ -38,7 +38,7 @@ class MainTests(unittest.TestCase):
         self.business_data = {
             'id': uuid.uuid4().hex,
             'name': 'Inzora rooftop coffee',
-            'description': 'We have best coffee for you, Come and drink it in the best view of the town',
+            'description': 'We have best coffee for you,',
             'country': 'Kenya',
             'city': 'Nairobi'
         }
@@ -169,7 +169,7 @@ class MainTests(unittest.TestCase):
             'old_password': self.sample_user['password'],  # Old password
             'new_password': '123456',
         },
-            headers={'Authorization': 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTUyMDUzMzQyOSwiZXhwIjoxNTIwNTY5NDI5fQ.eyJpZCI6ImQ1NDlmZGM3NNkNzQ2N2RhOGYwYmFiMjUxMjNjNjc5In0.yQ4yQxZYI-vmeqW6s1hqaC3OrXuii_D8mK2lpEcDn7g'})
+            headers={'Authorization': 'eyJhbGciOQxYI-vmeqW6s1hqaC3OrXuii_D8mK2lpEcDn7g'})
         self.assertEqual(response.status_code, 401)
         self.assertIn(
             b'Unauthorized', response.data)
@@ -180,7 +180,7 @@ class MainTests(unittest.TestCase):
         '''
         response = self.app.post(self.url_prefix + 'businesses', data={
             'name': 'Inzora rooftop coffee',
-            'description': 'We have best coffee for you, Come and drink it in the best view of the town',
+            'description': 'We have best coffee',
             'country': 'Kenya',
             'city': 'Nairobi'
         }, headers={'Authorization': self.test_token})
@@ -188,7 +188,7 @@ class MainTests(unittest.TestCase):
         self.assertIn(
             b'business has been successfully registered', response.data)
 
-    def test_business_owner_business_registration(self):
+    def test_same_business_registration(self):
         '''
             Test business registration with the same name under same user
         '''
@@ -274,8 +274,8 @@ class MainTests(unittest.TestCase):
         # Save business in the storage list for testing
         Business.save(self.business_data)
         Business.save(additional_business_data)
-        response = self.app.put(self.url_prefix + 'businesses/' + self.business_data[
-            'id'], data=new_business_data, headers={'Authorization': self.test_token})
+        response = self.app.put(self.url_prefix + 'businesses/' +
+                                self.business_data['id'], data=new_business_data, headers={'Authorization': self.test_token})
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'You have already registered this other business with same name', response.data)

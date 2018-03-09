@@ -8,7 +8,8 @@ from werkzeug.security import check_password_hash
 from api.models.store import Store
 from api.models.user import User
 from api.models.business import Business
-from api.inputs.inputs import validate, REGISTER_RULES, LOGIN_RULES, RESET_PWD_RULES, REGISTER_BUSINESS_RULES
+from api.inputs.inputs import (
+    validate, REGISTER_RULES, LOGIN_RULES, RESET_PWD_RULES, REGISTER_BUSINESS_RULES)
 from api.helpers import get_token, token_id
 
 API = Blueprint('api', 'api', url_prefix='/api/v1/')
@@ -174,7 +175,7 @@ def register_business():
         'country': request.form['country'],
         'city': request.form['city'],
     }
-    if(Business.has_same_business(user_id, request.form['name'])):
+    if Business.has_same_business(user_id, request.form['name']):
         response = jsonify(
             status='error', message="You have already registered this business")
         response.status_code = 400
@@ -230,9 +231,10 @@ def update_business(id):
             'country': request.form['country'],
             'city': request.form['city'],
         }
-        if(Business.has_two_same_business(user_id, request.form['name'], id)):
+        if Business.has_two_same_business(user_id, request.form['name'], id):
             response = jsonify(
-                status='error', message="You have already registered this other business with same name")
+                status='error',
+                message="You have already registered this other business with same name")
             response.status_code = 400
             return response
         Business.update(id, data)
@@ -247,6 +249,7 @@ def update_business(id):
     response.status_code = 400
     return response
 
+
 @API.route('businesses', methods=['GET'])
 @auth
 def get_user_businesses():
@@ -254,11 +257,11 @@ def get_user_businesses():
         Business updating endpoint method
     """
     user_id = token_id(request.headers.get('Authorization'))
-    if(Business.has_business(user_id)):
+    if Business.has_business(user_id):
         businesses = Business.user_businesses(user_id)
         response = jsonify({
             'status': 'ok',
-            'message': 'You have businesses'+ str(len(businesses)) +'registered businesses',
+            'message': 'You have businesses' + str(len(businesses)) + 'registered businesses',
             'businesses': businesses
         })
         response.status_code = 200
