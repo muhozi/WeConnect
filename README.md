@@ -57,21 +57,21 @@ pip install -r requirements.txt
 
 ### API Endpoints
 
-***`POST /api/auth/register`***
+**`POST /api/v1/auth/register`**
 
-***`POST /api/auth/login`***
+**`POST /api/v1/auth/login`**
 
 <u>**Protected endpoints**</u>: Access token is required (`Authorization` header token)
 
-***`POST /api/auth/reset-password`***
+***`*POST /api/v1/auth/reset-password`***
 
-***`POST /api/businesses`***
+**`POST /api/v1/businesses`**
 
-***`PUT /api/businesses/<business-id>`***
+**`PUT /api/v1/businesses/<business-id>`**
 
-***`DELETE /api/businesses/<business-id>`***
+**`DELETE /api/v1/businesses/<business-id>`**
 
-***`GET /api/businesses`***
+**`GET /api/v1/businesses`**
 
 ### Run the tests
 
