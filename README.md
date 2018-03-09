@@ -1,7 +1,6 @@
 # WeConnect 
 [![Build Status](https://travis-ci.org/muhozi/WeConnect.svg?branch=master)](https://travis-ci.org/muhozi/WeConnect)
 [![Coverage Status](https://coveralls.io/repos/github/muhozi/WeConnect/badge.svg)](https://coveralls.io/github/muhozi/WeConnect)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/4fed0cd96ad48633a616/test_coverage)](https://codeclimate.com/github/muhozi/WeConnect/test_coverage)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/430f61e8095c42978b9461b03b7570ae)](https://www.codacy.com/app/muhozi/WeConnect?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=muhozi/WeConnect&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4fed0cd96ad48633a616/maintainability)](https://codeclimate.com/github/muhozi/WeConnect/maintainability)
 
@@ -26,7 +25,7 @@ Have a look at  the UI follow the link for a demo **[Demo](https:///muhozi.githu
 
 This platform API is built on the top Flask python web framework
 
-### Try out the API
+### Set up the environment
 
 Clone the repository
 
@@ -55,6 +54,24 @@ Install dependencies using pip
 ```sh
 pip install -r requirements.txt
 ```
+
+### API Endpoints
+
+***`POST /api/auth/register`***
+
+***`POST /api/auth/login`***
+
+<u>**Protected endpoints**</u>: Access token is required (`Authorization` header token)
+
+***`POST /api/auth/reset-password`***
+
+***`POST /api/businesses`***
+
+***`PUT /api/businesses/<business-id>`***
+
+***`DELETE /api/businesses/<business-id>`***
+
+***`GET /api/businesses`***
 
 ### Run the tests
 
