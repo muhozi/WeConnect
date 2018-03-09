@@ -63,7 +63,7 @@ pip install -r requirements.txt
 
 <u>**Protected endpoints**</u>: Access token is required (`Authorization` header token)
 
-***`*POST /api/v1/auth/reset-password`***
+***`POST /api/v1/auth/reset-password`***
 
 **`POST /api/v1/businesses`**
 
