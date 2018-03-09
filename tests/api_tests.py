@@ -300,5 +300,27 @@ class MainTests(unittest.TestCase):
         self.assertIn(
             b'Please provide required info', response.data)
 
+    def test_businesses(self):
+        '''
+            Test retrieving logged in user business
+        '''
+        # New business details to test updating
+        dummy_business_data = {
+            'id': uuid.uuid4().hex,
+            'user_id': self.sample_user['id'],
+            'name': 'KFC',
+            'description': 'Finger lickin\' good',
+            'country': 'Kenya',
+            'city': 'Nairobi'
+        }
+        # Add user(owner) to the business data dict
+        self.business_data['user_id'] = self.sample_user['id']
+        # Save businesses to test
+        Business.save(self.business_data)
+        Business.save(dummy_business_data)
+        response = self.app.get(
+            self.url_prefix + 'businesses', headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 200)
+
 if __name__ == '__main__':
     unittest.main()
