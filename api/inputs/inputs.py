@@ -2,20 +2,29 @@
 from api.validations import Validations
 # Registration validations
 REGISTER_RULES = [
-    {'names': [('string', True), ('min', 4), ('required', True)]},
-    {'email': [('min', 6), ('required', True)]},
-    {'password': [('min', 6), ('required', True)]},
-    {'confirm_password': [('min', 6), ('required', True)]},
+    {'username': [('string', True), ('min', 4),
+                  ('maximum', 30), ('required', True)]},
+    {'email': [('min', 6), ('maximum', 30), ('required', True), ('email', True)]},
+    {'password': [('min', 6), ('maximum', 30), ('required', True)]},
+    {'confirm_password': [('min', 6), ('maximum', 30),
+                          ('required', True), ('same', 'password')]},
 ]
-# Login validations
+# Login validation
 LOGIN_RULES = [
     {'email': [('min', 6), ('required', True)]},
     {'password': [('min', 6), ('required', True)]},
 ]
 # Reset password validations
 RESET_PWD_RULES = [
-    {'new_password': [('min', 6), ('required', True)]},
-    {'old_password': [('min', 6), ('required', True)]},
+    {'new_password': [('min', 6), ('maximum', 30), ('required', True)]},
+    {'old_password': [('min', 6), ('maximum', 30), ('required', True)]},
+]
+# Register business validation rules
+REGISTER_BUSINESS_RULES = [
+    {'name': [('min', 2), ('required', True)]},
+    {'description': [('min', 6), ('required', True)]},
+    {'country': [('min', 4), ('required', True)]},
+    {'city': [('min', 6), ('required', True)]},
 ]
 
 
