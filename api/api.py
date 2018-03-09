@@ -22,7 +22,7 @@ def auth(arg):
         """ Check if token exists in the request header"""
         if request.headers.get('Authorization'):
             token = request.headers.get('Authorization')
-            if User.token_exists(token):
+            if User.token_exists(token) and token_id(token):
                 return arg(*args, **kwargs)
         response = jsonify({
             'status': 'error',
@@ -194,12 +194,50 @@ def delete_business(id):
         Business deletion endpoint method
     """
     user_id = token_id(request.headers.get('Authorization'))
-    print(id)
     if(Business.has_this_business(user_id, id)):
         Business.delete_business(id)
         response = jsonify({
             'status': 'ok',
             'message': "Your business has been successfully deleted"
+        })
+        response.status_code = 202
+        return response
+    response = jsonify(
+        status='error', message="This business doesn't exist")
+    response.status_code = 400
+    return response
+
+
+@API.route('businesses/<id>', methods=['PUT'])
+@auth
+def update_business(id):
+    """
+        Business updating endpoint method
+    """
+    user_id = token_id(request.headers.get('Authorization'))
+    if(Business.has_this_business(user_id, id)):
+        valid = validate(request.form, REGISTER_BUSINESS_RULES)
+        if valid != True:
+            response = jsonify(
+                status='error', message="Please provide required info", errors=valid)
+            response.status_code = 400
+            return response
+        data = {
+            'user_id': user_id,
+            'name': request.form['name'],
+            'description': request.form['description'],
+            'country': request.form['country'],
+            'city': request.form['city'],
+        }
+        if(Business.has_two_same_business(user_id, request.form['name'], id)):
+            response = jsonify(
+                status='error', message="You have already registered this other business with same name")
+            response.status_code = 400
+            return response
+        Business.update(id, data)
+        response = jsonify({
+            'status': 'ok',
+            'message': "Your business has been successfully updated"
         })
         response.status_code = 202
         return response

@@ -159,6 +159,21 @@ class MainTests(unittest.TestCase):
         self.assertIn(
             b'You have successfully changed your password', response.data)
 
+    def test_valid_token(self):
+        """
+            Testing valid token
+        """
+        # Test invalid token by accessing protected endpoint with invalid
+        # authorization token
+        response = self.app.post(self.url_prefix + 'auth/reset-password', data={
+            'old_password': self.sample_user['password'],  # Old password
+            'new_password': '123456',
+        },
+            headers={'Authorization': 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTUyMDUzMzQyOSwiZXhwIjoxNTIwNTY5NDI5fQ.eyJpZCI6ImQ1NDlmZGM3NNkNzQ2N2RhOGYwYmFiMjUxMjNjNjc5In0.yQ4yQxZYI-vmeqW6s1hqaC3OrXuii_D8mK2lpEcDn7g'})
+        self.assertEqual(response.status_code, 401)
+        self.assertIn(
+            b'Unauthorized', response.data)
+
     def test_business_registration(self):
         '''
             Testing business registration
@@ -175,7 +190,7 @@ class MainTests(unittest.TestCase):
 
     def test_business_owner_business_registration(self):
         '''
-            Testing business registration with by existing business owner
+            Test business registration with the same name under same user
         '''
         data = self.business_data
         data['user_id'] = self.sample_user['id']
@@ -201,7 +216,7 @@ class MainTests(unittest.TestCase):
 
     def test_business_deletion(self):
         '''
-            Test deleting business
+            Test removing business
         '''
         # Add user(owner) to the business data dict
         self.business_data['user_id'] = self.sample_user['id']
@@ -212,6 +227,78 @@ class MainTests(unittest.TestCase):
         self.assertEqual(response.status_code, 202)
         self.assertIn(
             b'Your business has been successfully deleted', response.data)
+
+    def test_business_update(self):
+        '''
+            Test business updating
+        '''
+        # New business details to test updating
+        new_business_data = {
+            'name': 'Inzora Nakuru',
+            'description': 'Enjoy Coffee and Pizzas',
+            'country': 'Kenya',
+            'city': 'Nakuru'
+        }
+        # Add user(owner) to the business data dict
+        self.business_data['user_id'] = self.sample_user['id']
+        # Save business in the storage list for testing
+        Business.save(self.business_data)
+        response = self.app.put(self.url_prefix + 'businesses/' + self.business_data[
+            'id'], data=new_business_data, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 202)
+        self.assertIn(
+            b'Your business has been successfully updated', response.data)
+
+    def test_updating_business_with_same_name(self):
+        '''
+            Test business updating with existing busiiness name under one user
+        '''
+        # New business details to test updating
+        new_business_data = {
+            'name': 'TRM',
+            'description': 'Enjoy Coffee and Pizzas',
+            'country': 'Kenya',
+            'city': 'Nakuru'
+        }
+        # Data to be saved to test same name businesses under one person
+        additional_business_data = {
+            'id': uuid.uuid4().hex,
+            'user_id': self.sample_user['id'],
+            'name': 'TRM',
+            'description': 'Enjoy Coffee and Pizzas',
+            'country': 'Kenya',
+            'city': 'Nakuru'
+        }
+        # Add user(owner) to the business data dict
+        self.business_data['user_id'] = self.sample_user['id']
+        # Save business in the storage list for testing
+        Business.save(self.business_data)
+        Business.save(additional_business_data)
+        response = self.app.put(self.url_prefix + 'businesses/' + self.business_data[
+            'id'], data=new_business_data, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            b'You have already registered this other business with same name', response.data)
+
+    def test_business_update_with_invalid_data(self):
+        '''
+            Test business updating with invalid data
+        '''
+        # New business details to test updating
+        new_business_data = {
+            'name': 'Inzora Nakuru',
+            'country': 'Kenya',
+            'city': 'Nakuru'
+        }
+        # Add user(owner) to the business data dict
+        self.business_data['user_id'] = self.sample_user['id']
+        # Save business in the storage list for testing
+        Business.save(self.business_data)
+        response = self.app.put(self.url_prefix + 'businesses/' + self.business_data[
+            'id'], data=new_business_data, headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            b'Please provide required info', response.data)
 
 if __name__ == '__main__':
     unittest.main()

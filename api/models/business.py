@@ -17,6 +17,13 @@ class Business():
         return False
 
     @classmethod
+    def has_two_same_business(self, user_id, business_name, business_id):
+        for business in Store.businesses:
+            if (business['user_id'] == user_id and (business['name']).lower() == business_name.lower() and business['id'] != business_id):
+                return True
+        return False
+
+    @classmethod
     def has_this_business(self, user_id, business_id):
         for business in Store.businesses:
             if business['user_id'] == user_id and business['id'] == business_id:
@@ -24,5 +31,9 @@ class Business():
         return False
 
     @classmethod
-    def delete_business(self,id):
+    def delete_business(self, id):
         Store.delete_business(id)
+
+    @classmethod
+    def update(self, id, data):
+        Store.update_business(id, data)

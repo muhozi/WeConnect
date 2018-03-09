@@ -32,15 +32,29 @@ class Store():
     # Business methods
     @classmethod
     def save_business(self, data):
-        """Save user method"""
+        """Save business method"""
         self.businesses.append(data)
 
     @classmethod
     def remove_token(self, token):
-        """Save user method"""
+        """Remove auth token method"""
         self.auth_tokens.remove(token)
 
     @classmethod
-    def delete_business(self,business_id):
+    def delete_business(self, business_id):
         self.businesses[:] = [
             business for business in self.businesses if business.get('id') != business_id]
+
+    @classmethod
+    def update_business(self, id, data):
+        """Update business method"""
+        print("Before")
+        print(self.businesses)
+        for key in range(0, len(self.businesses)):
+            if self.businesses[key]['id'] == id:
+                data['id'] = id # Append existing business id to the data
+                self.businesses[key] = data
+                break
+        print("Before")
+        print(self.businesses)
+
