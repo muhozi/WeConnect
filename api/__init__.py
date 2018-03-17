@@ -14,7 +14,7 @@ SWAGGER_CONFIG = {
             "version": "1",
             "title": "Api v1",
             "endpoint": 'apispec',
-            "route": '/api/v1/',
+            "route": '/api/v1/docs.json',
             "rule_filter": lambda rule: True,
             "model_filter": lambda tag: True,
         }
@@ -27,7 +27,7 @@ TEMPLATE = {
     "swagger": "2.0",
     "info": {
         "title": "WeConnect",
-        "description": "WeConnect Platform API",
+        "description": "WeConnect Platform API v1",
         "version": "1"
     },
     "consumes": [
