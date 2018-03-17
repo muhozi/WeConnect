@@ -43,19 +43,19 @@ class User(Store):
         return False
 
     @classmethod
-    def check_password(cls, id, readable_password):
+    def check_password(cls, user_id, readable_password):
         """ Check if password """
         for user in Store.users:
-            if user['id'] == id:
+            if user['id'] == user_id:
                 if check_password_hash(user['password'], readable_password):
                     return True
         return False
 
     @classmethod
-    def change_password(cls, id, password):
+    def change_password(cls, user_id, password):
         """ Update user password """
         password = generate_password_hash(password)
-        Store.update_password(id, password)
+        Store.update_password(user_id, password)
 
     @classmethod
     def has_business(cls, user_id):

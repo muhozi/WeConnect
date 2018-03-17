@@ -22,7 +22,9 @@ class Business():
     def has_two_same_business(cls, user_id, business_name, business_id):
         """ Check if the user has the two same busines name #nt from the one to update"""
         for business in Store.businesses:
-            if (business['user_id'] == user_id and (business['name']).lower() == business_name.lower() and business['id'] != business_id):
+            if (business['user_id'] == user_id and
+                    (business['name']).lower() == business_name.lower() and
+                    business['id'] != business_id):
                 return True
         return False
 

@@ -1,18 +1,27 @@
 """
-    Our Main api app
+    Our Main api routes
 """
 import uuid
 from functools import wraps
 from flask import Blueprint, jsonify, request
 from werkzeug.security import check_password_hash
+from flasgger.utils import swag_from
 from api.models.store import Store
 from api.models.user import User
 from api.models.business import Business
+from api.docs.docs import (REGISTER_DOCS,
+                           LOGIN_DOCS,
+                           LOGOUT_DOCS,
+                           RESET_PASSWORD_DOCS,
+                           REGISTER_BUSINESS_DOCS,
+                           GET_BUSINESSES_DOCS,
+                           UPDATE_BUSINESS_DOCS,
+                           DELETE_BUSINESS_DOCS)
 from api.inputs.inputs import (
     validate, REGISTER_RULES, LOGIN_RULES, RESET_PWD_RULES, REGISTER_BUSINESS_RULES)
 from api.helpers import get_token, token_id
 
-API = Blueprint('api', 'api', url_prefix='/api/v1/')
+API = Blueprint('v1', __name__, url_prefix='/api/v1')
 STORE = Store
 
 
@@ -34,10 +43,11 @@ def auth(arg):
     return wrap
 
 
-@API.route('auth/register', methods=['POST'])
+@API.route('/auth/register', methods=['POST'])
+@swag_from(REGISTER_DOCS)
 def register():
     """
-        Registration endpoint method
+        User Registration
     """
     valid = validate(request.get_json(force=True), REGISTER_RULES)
     sent_data = request.get_json(force=True)
@@ -68,11 +78,12 @@ def register():
     return response
 
 
-@API.route('auth/logout', methods=['POST'])
+@API.route('/auth/logout', methods=['POST'])
 @auth
+@swag_from(LOGOUT_DOCS)
 def logout():
     """
-        Logout endpoint
+        User logout
     """
     Store.remove_token(request.headers.get('Authorization'))
     response = jsonify({
@@ -83,10 +94,11 @@ def logout():
     return response
 
 
-@API.route('auth/login', methods=['POST'])
+@API.route('/auth/login', methods=['POST'])
+@swag_from(LOGIN_DOCS)
 def login():
     """
-        Login endpoint method
+        User login
     """
     sent_data = request.get_json(force=True)
     valid = validate(sent_data, LOGIN_RULES)
@@ -108,10 +120,11 @@ def login():
             User.add_token(token)
             response = jsonify({
                 'status': 'ok',
-                'message': "You have been successfully logged in"
+                'message': 'You have been successfully logged in',
+                'access_token': token,
             })
             response.status_code = 200
-            response.headers['auth_token'] = token
+            # response.headers['auth_token'] = token
             return response
         response = jsonify({
             'status': 'error',
@@ -127,11 +140,12 @@ def login():
     return response
 
 
-@API.route('auth/reset-password', methods=['POST'])
+@API.route('/auth/reset-password', methods=['POST'])
 @auth
+@swag_from(RESET_PASSWORD_DOCS)
 def reset_password():
     """
-        Registration endpoint method
+        User password reset
     """
     sent_data = request.get_json(force=True)
     valid = validate(sent_data, RESET_PWD_RULES)
@@ -156,11 +170,12 @@ def reset_password():
     return response
 
 
-@API.route('businesses', methods=['POST'])
+@API.route('/businesses', methods=['POST'])
 @auth
+@swag_from(REGISTER_BUSINESS_DOCS)
 def register_business():
     """
-        Business registration endpoint endpoint method
+        Register business
     """
     sent_data = request.get_json(force=True)
     valid = validate(sent_data, REGISTER_BUSINESS_RULES)
@@ -192,15 +207,16 @@ def register_business():
     return response
 
 
-@API.route('businesses/<id>', methods=['DELETE'])
+@API.route('/businesses/<business_id>', methods=['DELETE'])
 @auth
-def delete_business(id):
+@swag_from(DELETE_BUSINESS_DOCS)
+def delete_business(business_id):
     """
-        Business deletion endpoint method
+        Delete business
     """
     user_id = token_id(request.headers.get('Authorization'))
-    if(Business.has_this_business(user_id, id)):
-        Business.delete_business(id)
+    if Business.has_this_business(user_id, business_id):
+        Business.delete_business(business_id)
         response = jsonify({
             'status': 'ok',
             'message': "Your business has been successfully deleted"
@@ -213,15 +229,16 @@ def delete_business(id):
     return response
 
 
-@API.route('businesses/<id>', methods=['PUT'])
+@API.route('/businesses/<business_id>', methods=['PUT'])
 @auth
-def update_business(id):
+@swag_from(UPDATE_BUSINESS_DOCS)
+def update_business(business_id):
     """
-        Business updating endpoint method
+        Update business
     """
     sent_data = request.get_json(force=True)
     user_id = token_id(request.headers.get('Authorization'))
-    if(Business.has_this_business(user_id, id)):
+    if Business.has_this_business(user_id, business_id):
         valid = validate(sent_data, REGISTER_BUSINESS_RULES)
         if valid != True:
             response = jsonify(
@@ -235,13 +252,13 @@ def update_business(id):
             'country': sent_data['country'],
             'city': sent_data['city'],
         }
-        if Business.has_two_same_business(user_id, sent_data['name'], id):
+        if Business.has_two_same_business(user_id, sent_data['name'], business_id):
             response = jsonify(
                 status='error',
                 message="You have already registered this other business with same name")
             response.status_code = 400
             return response
-        Business.update(id, data)
+        Business.update(business_id, data)
         response = jsonify({
             'status': 'ok',
             'message': "Your business has been successfully updated"
@@ -254,23 +271,24 @@ def update_business(id):
     return response
 
 
-@API.route('businesses', methods=['GET'])
+@API.route('/businesses', methods=['GET'])
 @auth
+@swag_from(GET_BUSINESSES_DOCS)
 def get_user_businesses():
     """
-        Business updating endpoint method
+        Business lists
     """
     user_id = token_id(request.headers.get('Authorization'))
     if Business.has_business(user_id):
         businesses = Business.user_businesses(user_id)
         response = jsonify({
             'status': 'ok',
-            'message': 'You have businesses' + str(len(businesses)) + 'registered businesses',
+            'message': 'You have businesses ' + str(len(businesses)) + ' registered businesses',
             'businesses': businesses
         })
         response.status_code = 200
         return response
     response = jsonify(
         status='error', message="You don't have registered business")
-    response.status_code = 400
+    response.status_code = 204
     return response
