@@ -14,12 +14,10 @@ class Validations():
 
     def string(self, key, string):
         """Check if input is required"""
-        if string:
-            if key in self.all:
-                if self.all[key].isalpha():
-                    return True
-                return key + " should be string"
-            return True
+        if key in self.all:
+            if self.all[key].isalpha():
+                return True
+            return key + " should be string"
         return True
 
     def minimum(self, key, minimum):
@@ -40,11 +38,9 @@ class Validations():
 
     def email(self, key, email):
         """Check required character size"""
-        if email:
-            if key in self.all:
-                if not re.match(r"[^@]+@[^@]+\.[^@]+", self.all[key]):
-                    return "Invalid email address"
-                return True
+        if key in self.all:
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", self.all[key]):
+                return "Invalid email address"
             return True
         return True
 
@@ -59,10 +55,8 @@ class Validations():
 
     def required(self, key, is_required=True):
         """Check input it is required"""
-        if is_required:
-            if key in self.all:
-                if self.all[key] is None:
-                    return key + " should not be empty"
-                return True
-            return key + " is required"
-        return True
+        if key in self.all:
+            if self.all[key] is None:
+                return key + " should not be empty"
+            return True
+        return key + " is required"
