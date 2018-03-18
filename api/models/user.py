@@ -56,11 +56,3 @@ class User(Store):
         """ Update user password """
         password = generate_password_hash(password)
         Store.update_password(user_id, password)
-
-    @classmethod
-    def has_business(cls, user_id):
-        """Check if user has business """
-        for user_ in Store.businesses:
-            if user_['user_id'] == user_id:
-                return True
-        return False

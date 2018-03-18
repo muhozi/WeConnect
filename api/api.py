@@ -156,7 +156,9 @@ def reset_password():
     sent_data = request.get_json(force=True)
     valid = validate(sent_data, RESET_PWD_RULES)
     if valid != True:
-        response = jsonify(status='error', message=valid)
+        response = jsonify(status='error',
+                           message="Please provide valid details",
+                           errors=valid)
         response.status_code = 400
         return response
     user_id = token_id(request.headers.get('Authorization'))
@@ -230,7 +232,8 @@ def delete_business(business_id):
         response.status_code = 202
         return response
     response = jsonify(
-        status='error', message="This business doesn't exist")
+        status='error',
+        message="This business doesn't exist or you don't have privileges to it")
     response.status_code = 400
     return response
 
@@ -272,7 +275,8 @@ def update_business(business_id):
         response.status_code = 202
         return response
     response = jsonify(
-        status='error', message="This business doesn't exist")
+        status='error',
+        message="This business doesn't exist or you don't have privileges to it")
     response.status_code = 400
     return response
 

@@ -53,6 +53,24 @@ class ReviewTests(MainTests):
         self.assertIn(
             b'provide valid details', response.data)
 
+    def test_no_business_reviews(self):
+        '''
+            Test retrieving business reviews with no reviews
+        '''
+        response = self.app.get(
+            self.url_prefix + 'businesses/' + self.rev_business_data['id'] + '/reviews')
+        self.assertEqual(response.status_code, 204)
+
+    def test_no_exist_business_reviews(self):
+        '''
+            Test retrieving reviews business which doesn't exist
+        '''
+        response = self.app.get(
+            self.url_prefix + 'businesses/any_dummy_id/reviews')
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            b'This business doesn\'t exist', response.data)
+
     def test_business_reviews(self):
         '''
             Test retrieving business reviews
@@ -67,6 +85,8 @@ class ReviewTests(MainTests):
         response = self.app.get(
             self.url_prefix + 'businesses/' + self.rev_business_data['id'] + '/reviews')
         self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            b'reviews found', response.data)
 
     def test_add_review_to_invalid_business(self):
         '''

@@ -31,6 +31,7 @@ class MainTests(unittest.TestCase):
             'confirm_password': 'secret'
         }
         self.exist_user = {
+            'id': uuid.uuid4().hex,
             'username': 'Kudo',
             'email': 'kaka@andela.com',
             'password': 'secret',
@@ -64,12 +65,24 @@ class MainTests(unittest.TestCase):
         # Save business in the storage list for testing
         Business.save(self.rev_business_data)
         with APP.test_request_context():
+            # Orphan id: User id that will be used to create an orphan token
+            orphan_id = uuid.uuid4().hex
+            save_user.save({
+                'id': orphan_id,
+                'username': "uname",
+                'email': "anyemail@gmail.com",
+                'password': self.exist_user['password'],
+                'confirm_password': self.exist_user['confirm_password']
+            })
             # Issue a token the the test user (sample_user)
             # Store test token in auth storage auth_token list
             token = get_token(self.sample_user['id'])
-            expired_token = get_token(self.sample_user['id'],-3600)
+            #Orphan token: User token that do not have any registered business 
+            orphan_token = get_token(orphan_id)
+            expired_token = get_token(self.sample_user['id'], -3600)
             User().add_token(token)
             User().add_token(expired_token)
+            User().add_token(orphan_token)
             self.test_token = token
             self.expired_test_token = expired_token
-            
+            self.orphan_test_token = orphan_token

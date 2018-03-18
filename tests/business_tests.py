@@ -71,6 +71,18 @@ class BusinessTests(MainTests):
         self.assertIn(
             b'Your business has been successfully deleted', response.data)
 
+    def test_no_priv_business_deletion(self):
+        '''
+            Test removing business without privileges to it
+        '''
+        # Add user(owner) to the business data dict
+        self.business_data['user_id'] = self.sample_user['id']
+        # Save business in the storage list for testing
+        Business.save(self.business_data)
+        response = self.app.delete(self.url_prefix + 'businesses/' + self.business_data[
+            'id'], data={}, headers={'Authorization': self.orphan_test_token})
+        self.assertEqual(response.status_code, 400)
+
     def test_business_update(self):
         '''
             Test business updating
@@ -91,6 +103,24 @@ class BusinessTests(MainTests):
         self.assertEqual(response.status_code, 202)
         self.assertIn(
             b'Your business has been successfully updated', response.data)
+
+    def test_no_priv_business_update(self):
+        '''
+            Test business updating with no privileges to it
+        '''
+        # New business details to test updating
+        new_business_data = {
+            'name': 'Wazi wazi',
+            'description': 'Enjoy Coffee and Pizzas',
+            'country': 'Kenya',
+            'city': 'Nakuru'
+        }
+        # Add user(owner) to the business data dict
+        response = self.app.put(self.url_prefix + 'businesses/' + self.business_data[
+            'id'], data=json.dumps(new_business_data), headers={'Authorization': self.orphan_test_token})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            b'This business doesn\'t exist or you don\'t have privileges to it', response.data)
 
     def test_updating_business_with_same_name(self):
         '''
@@ -145,6 +175,14 @@ class BusinessTests(MainTests):
         self.assertEqual(response.status_code, 400)
         self.assertIn(
             b'Please provide required info', response.data)
+
+    def test_no_user_businesses(self):
+        '''
+            Test retrieving logged in user business without any
+        '''
+        response = self.app.get(
+            self.url_prefix + 'businesses', headers={'Authorization': self.orphan_test_token})
+        self.assertEqual(response.status_code, 204)
 
     def test_businesses(self):
         '''

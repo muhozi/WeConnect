@@ -115,6 +115,31 @@ class UserTests(MainTests):
         self.assertIn(
             b'You have successfully changed your password', response.data)
 
+    def test_invalid_old_password_reset(self):
+        """
+            Testing password Reset with invalid old password
+        """
+        response = self.app.post(self.url_prefix + 'auth/reset-password', data=json.dumps({
+            'old_password': 'sgdffsds',  # Invalid Old password
+            'new_password': '123456',
+        }), content_type='application/json',
+            headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            b'Invalid old password', response.data)
+
+    def test_invalid_data_password_reset(self):
+        """
+            Testing password Reset with invalid details
+        """
+        response = self.app.post(self.url_prefix + 'auth/reset-password', data=json.dumps({
+            'new_password': '123456',
+        }), content_type='application/json',
+            headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            b'Please provide valid details', response.data)
+
     def test_valid_token(self):
         """
             Testing valid token
