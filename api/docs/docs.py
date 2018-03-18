@@ -373,7 +373,7 @@ GET_BUSINESSES_DOCS = {
         "200": {
             "description": "Return response status and message and a list of authenticated user businesses ",
             "schema": {
-                "id": "logout_response",
+                "id": "get_business_response",
                 "properties": {
                     "status": {
                         "type": "string",
@@ -387,6 +387,82 @@ GET_BUSINESSES_DOCS = {
                         "type": "array",
                         "items": {
                             "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "example": "a69de3743ae24ac89dc3dc2e54c91b3b"
+                                },
+                                "user_id": {
+                                    "type": "string",
+                                    "example": "a69de3743ae24ac89dc3dc2e54c9bdsf"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "Inzora rooftop"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "example": "We get best coffee"
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "example": "Rwanda"
+                                },
+                                "city": {
+                                    "type": "string",
+                                    "example": "Kigali"
+                                },
+                            }
+                        }
+                    },
+                }
+            },
+        }
+    }
+}
+
+GET_BUSINESS_DOCS = {
+    "tags": [
+        "Business"
+    ],
+    "description": "Get a business details",
+    "parameters": [
+        {
+            "name": "business_id",
+            "in": "path",
+            "description": "Business id",
+            "schema": {
+                "type": "string",
+                "format": "uuid",
+            },
+            "required": True,
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "Return response status and message and business details",
+            "schema": {
+                "id": "get_business_response",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "ok"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Business found"
+                    },
+                    "business": {
+                        "type": "object",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "example": "a69de3743ae24ac89dc3dc2e54c91b3b"
+                                },
+                                "user_id": {
+                                    "type": "string",
+                                    "example": "a69de3743ae24ac89dc3dc2e54c9bdsf"
+                                },
                                 "name": {
                                     "type": "string",
                                     "example": "Inzora rooftop"
@@ -446,6 +522,162 @@ DELETE_BUSINESS_DOCS = {
                     "message": {
                         "type": "string",
                         "example": "Your business has been successfully deleted"
+                    },
+                }
+            }
+        }
+    }
+}
+
+BUSINESS_REVIEWS_DOCS = {
+    "tags": [
+        "Reviews"
+    ],
+    "description": "Get a list business reviews",
+    "parameters": [
+        {
+            "name": "business_id",
+            "in": "path",
+            "description": "Business id",
+            "schema": {
+                "type": "string",
+                "format": "uuid",
+            },
+            "required": True,
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "Return response status and message,business details and a list of business reviews ",
+            "schema": {
+                "id": "business_reviews_response",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "ok"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "1 review found"
+                    },
+                    "business": {
+                        "type": "object",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "example": "a69de3743ae24ac89dc3dc2e54c91b3b"
+                                },
+                                "user_id": {
+                                    "type": "string",
+                                    "example": "a69de3743ae24ac89dc3dc2e54c9bdsf"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "Inzora rooftop"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "example": "We get best coffee"
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "example": "Rwanda"
+                                },
+                                "city": {
+                                    "type": "string",
+                                    "example": "Kigali"
+                                },
+                            }
+                        }
+                    },
+                    "reviews": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "example": "c9918c47a9a74a56af54ce44a6d60e2d"
+                                },
+                                "user_id": {
+                                    "type": "string",
+                                    "example": "fab15b5ee8c245d9bf1f22972f77ebbe"
+                                },
+                                "review": {
+                                    "type": "string",
+                                    "example": "You have best coffee"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "example": "2018-03-18 11:04"
+                                },
+                            }
+                        }
+                    },
+                }
+            },
+        }
+    }
+}
+
+ADD_BUSINESS_REVIEW_DOCS = {
+    "tags": [
+        "Reviews"
+    ],
+    "description": "Add business review",
+    "parameters": [
+        {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "schema": {
+                "type": "string",
+                "format": "uuid",
+            },
+            "required": True,
+        },
+        {
+            "name": "business_id",
+            "in": "path",
+            "description": "Business id",
+            "schema": {
+                "type": "string",
+                "format": "uuid",
+            },
+            "required": True,
+        },
+        {
+            "name": "body",
+            "in": "body",
+            "description": "Review",
+            "required": True,
+            "schema": {
+                "id": "review_request_scheme",
+                "required": [
+                    "review",
+                ],
+                "properties": {
+                    "review": {
+                        "type": "string",
+                        "example": "You have a great services"
+                    },
+                }
+            }
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "Return response status and message",
+            "schema": {
+                "id": "add_business_review_response",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "ok"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Your review has been submitted"
                     },
                 }
             }

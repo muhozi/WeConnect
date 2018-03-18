@@ -7,7 +7,7 @@ class Store():
     """Main store  for storing data"""
     users = []  # Users storage list
     businesses = []  # Businesses storage list
-    reviews = []  # Reviews storage list
+    reviews = {}  # Reviews storage dictionary
     auth_tokens = []  # Authentication tokens staorage list
     # User methods
 
@@ -55,3 +55,12 @@ class Store():
                 data['id'] = business_id
                 cls.businesses[key] = data
                 break
+
+    # Reviews methods
+
+    @classmethod
+    def save_review(cls, business_id, data):
+        """Save review method"""
+        if not business_id in cls.reviews:
+            cls.reviews[business_id] = []
+        cls.reviews[business_id].append(data)

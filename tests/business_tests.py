@@ -10,10 +10,12 @@ from api.models.business import Business
 from api.helpers import get_token
 from tests.api_tests import MainTests
 
+
 class BusinessTests(MainTests):
     """
         Main test
     """
+
     def test_business_registration(self):
         '''
             Testing business registration
@@ -165,3 +167,23 @@ class BusinessTests(MainTests):
         response = self.app.get(
             self.url_prefix + 'businesses', headers={'Authorization': self.test_token})
         self.assertEqual(response.status_code, 200)
+
+    def test_business(self):
+        '''
+            Test retrieving business details
+        '''
+        response = self.app.get(
+            self.url_prefix + 'businesses/' + self.rev_business_data['id'], headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            b'Business found', response.data)
+
+    def test_non_exist_business(self):
+        '''
+            Test retrieving business details which doesn't exist
+        '''
+        response = self.app.get(
+            self.url_prefix + 'businesses/' + "fsdfsd", headers={'Authorization': self.test_token})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            b'Business not found', response.data)
