@@ -9,7 +9,7 @@ WeConnect provides a platform that brings businesses and individuals together. T
 
 ## API
 
-![oc](C:\Andela\Challenge\WeConnect\docs.png)
+![Docs](docs.png "Docs")
 
 **TL**;**DR** Check the API docs https://allconnect.herokuapp.com/api/v1 
 
