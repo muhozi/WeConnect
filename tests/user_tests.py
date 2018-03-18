@@ -168,3 +168,32 @@ class UserTests(MainTests):
         self.assertEqual(response.status_code, 401)
         self.assertIn(
             b'Unauthorized', response.data)
+
+    def test_validation_methods(self):
+        '''
+            Test validation methods (same,minimum,email,string)
+        '''
+        response = self.app.post(self.url_prefix + 'auth/register', data=json.dumps({
+            'username': '',
+            'email': 'sdfsd@dfg',
+            'password': '12345678',
+            'confirm_password': '123456789'
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b'Invalid email address', response.data)
+        self.assertIn(b'should be string', response.data)
+        self.assertIn(b'don\'t match', response.data)
+        self.assertIn(b'should not be less', response.data)
+
+    def test_other_validation_methods(self):
+        '''
+            Test validation methods (required,maximum)
+        '''
+        response = self.app.post(self.url_prefix + 'auth/register', data=json.dumps({
+            'username': None,
+            'password': 'sgfdcasfgcdfagsdasfdgascgdfcasfd',
+            'confirm_password': 'sgfdcasfgcdfagsdasfdgascgdfcasfd'
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b'is required', response.data)
+        self.assertIn(b'should not be greater', response.data)

@@ -100,7 +100,7 @@ class ReviewTests(MainTests):
         self.assertIn(
             b'business doesn\'t exist', response.data)
 
-    def test_business_reviews(self):
+    def test_empty_business_reviews(self):
         '''
             Test retrieving business reviews with none any reviews
         '''

@@ -14,7 +14,7 @@ class Validations():
 
     def string(self, key, string):
         """Check if input is required"""
-        if key in self.all:
+        if key in self.all and self.all[key] is not None:
             if self.all[key].isalpha():
                 return True
             return key + " should be string"
@@ -22,7 +22,7 @@ class Validations():
 
     def minimum(self, key, minimum):
         """Check required character size"""
-        if key in self.all:
+        if key in self.all and self.all[key] is not None:
             if len(self.all[key]) < int(minimum):
                 return key + " should not be less than " + str(minimum) + " characters"
             return True
@@ -30,7 +30,7 @@ class Validations():
 
     def maximum(self, key, maximum):
         """Check required character size"""
-        if key in self.all:
+        if key in self.all and self.all[key] is not None:
             if len(self.all[key]) > int(maximum):
                 return key + " should not be greater than " + str(maximum) + " characters"
             return True
