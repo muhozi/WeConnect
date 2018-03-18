@@ -77,12 +77,19 @@ class MainTests(unittest.TestCase):
             # Issue a token the the test user (sample_user)
             # Store test token in auth storage auth_token list
             token = get_token(self.sample_user['id'])
-            #Orphan token: User token that do not have any registered business 
+            # Orphan token: User token that do not have any registered business
             orphan_token = get_token(orphan_id)
             expired_token = get_token(self.sample_user['id'], -3600)
+            # Create bad signature token
+            # Bad signature: #nt secret key from the one used in our API used
+            # to hash tokens
+            other_signature_token = get_token(
+                self.sample_user['id'], 3600, 'other_signature')
             User().add_token(token)
             User().add_token(expired_token)
             User().add_token(orphan_token)
+            User().add_token(other_signature_token)
             self.test_token = token
             self.expired_test_token = expired_token
+            self.other_signature_token = other_signature_token
             self.orphan_test_token = orphan_token

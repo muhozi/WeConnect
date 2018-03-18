@@ -148,7 +148,7 @@ class UserTests(MainTests):
         # authorization token
         response = self.app.post(self.url_prefix + 'auth/reset-password', data={
             'old_password': self.sample_user['password'],  # Old password
-            'new_password': '123456',
+            'new_password': '123456'
         },
             headers={'Authorization': 'eyJhbGciOQxYI-vmeqW6s1hqaC3OrXuii_D8mK2lpEcDn7g'})
         self.assertEqual(response.status_code, 401)
@@ -162,12 +162,23 @@ class UserTests(MainTests):
         # Test expired token by accessing protected endpoint with expired token
         response = self.app.post(self.url_prefix + 'auth/reset-password', data={
             'old_password': self.sample_user['password'],  # Old password
-            'new_password': '123456',
+            'new_password': '123456'
         },
             headers={'Authorization': self.expired_test_token})
         self.assertEqual(response.status_code, 401)
         self.assertIn(
             b'Unauthorized', response.data)
+
+    def test_bad_signature_token(self):
+        """
+            Testing Bad signature token
+        """
+        #Access protected endpoint with bad signature token
+        response = self.app.get(self.url_prefix + 'businesses',
+            headers={'Authorization': self.other_signature_token})
+        self.assertEqual(response.status_code, 401)
+        self.assertIn(
+            b'Unauthorize', response.data)
 
     def test_validation_methods(self):
         '''
