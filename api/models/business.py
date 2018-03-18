@@ -60,3 +60,10 @@ class Business():
     def update(cls, business_id, data):
         """ Update business"""
         Store.update_business(business_id, data)
+
+    @classmethod
+    def get_business(cls, business_id):
+        """ Get business details"""
+        for business in Store.businesses:
+            if business['id'] == business_id:
+                return business

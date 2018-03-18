@@ -27,8 +27,9 @@ REGISTER_BUSINESS_RULES = [
     {'country': [('minimum', 4), ('required', True)]},
     {'city': [('minimum', 6), ('required', True)]},
 ]
-
-
+REVIEW_RULES = [
+    {'review': [('minimum', 4), ('required', True)]},
+]
 def validate(inputs, all_rules):
     """ Register validation method """
     error_bag = {}

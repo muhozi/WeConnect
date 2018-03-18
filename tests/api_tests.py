@@ -51,6 +51,18 @@ class MainTests(unittest.TestCase):
             'password': self.sample_user['password'],
             'confirm_password': self.sample_user['confirm_password']
         })
+        # Save business for reviews testing
+        self.rev_business_data = {
+            'id': uuid.uuid4().hex,
+            'name': 'KFC',
+            'description': 'Finger lickin\' good',
+            'country': 'Kenya',
+            'city': 'Nairobi'
+        }
+        # Add user(owner) to the business data dict
+        self.rev_business_data['user_id'] = self.sample_user['id']
+        # Save business in the storage list for testing
+        Business.save(self.rev_business_data)
         with APP.test_request_context():
             # Issue a token the the test user (sample_user)
             # Store test token in auth storage auth_token list
