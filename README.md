@@ -11,7 +11,9 @@ WeConnect provides a platform that brings businesses and individuals together. T
 
 ![Docs](docs.png "Docs")
 
-**TL**;**DR** Check the API docs https://allconnect.herokuapp.com/api/v1 
+
+
+**TL**;**DR** Check the API docs at https://allconnect.herokuapp.com/api/v1 
 
 ### Set up the environment
 
@@ -45,7 +47,7 @@ Install dependencies using pip
 pip install -r requirements.txt
 ```
 
-### Run the tests
+### Run API Tests
 
 To run the tests, use `nosetests` or any other test runner of your choice
 
@@ -89,9 +91,15 @@ python app.py
 
 
 
+
+
 > The above endpoints may be accessed on Heroku, the base URL is https://allconnect.herokuapp.com
 >
-> Also read the detailed usage read the API documentation at  https://allconnect.herokuapp.com/api/v1
+> Also you may read and try out the detailed usage of the API through its documentation at 
+>
+>  https://allconnect.herokuapp.com/api/v1
+
+
 
 
 
