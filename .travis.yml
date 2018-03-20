@@ -6,10 +6,11 @@ python:
 install:
   - pip install -r requirements.txt
 
-# Load config for testing
+# Set config for testing on Travis
 env:
-  - DEBUG = True
-  - SECRET_KEY = '96da21865b3e3774d7b2f0cb15cf5ee4f7c1ce09042745ca'
+  global:
+    - DEBUG = True
+    - SECRET_KEY = '96da21865b3e3774d7b2f0cb15cf5ee4f7c1ce09042745ca'
 
 # command to run tests.py
 script:
