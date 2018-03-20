@@ -17,6 +17,7 @@ script:
   - nosetests --exe -v
   - nosetests --exe --with-coverage --cover-package=api
   - coveralls
+  - codecov
 
 after_sucess:
   - "coveralls"
