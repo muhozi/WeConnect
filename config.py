@@ -2,10 +2,14 @@
 	Flask configurations and other configurations
 """
 import os
-# Debug Mode
-DEBUG = True
+from dotenv import load_dotenv
+# Load Configs from .env
+load_dotenv()
 
 # App Directory
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-SECRET_KEY = '96da21865b3e3774d7b2f0cb15cf5ee4f7c1ce09042745ca'
+
 JSON_SORT_KEYS = False
+# Configs loaded from env
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG')
