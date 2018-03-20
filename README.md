@@ -99,6 +99,12 @@ python app.py
 
 
 
+### View API usage (Documentation)
+
+View the API usage (Documentation) in a browser via: http://127.0.0.1:5000/api/v1
+
+
+
 ### API Endpoints
 
 **`POST /api/v1/auth/register`** *User registration*
