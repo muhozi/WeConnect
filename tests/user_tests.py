@@ -185,7 +185,7 @@ class UserTests(MainTests):
             Test validation methods (same,minimum,email,string)
         '''
         response = self.app.post(self.url_prefix + 'auth/register', data=json.dumps({
-            'username': '@@@@@@@@@@@@@@@@',
+            'username': '@@@',
             'email': 'sdfsd@dfg',
             'password': '123',
             'confirm_password': '123456789'
