@@ -15,7 +15,7 @@ class Validations():
     def string(self, key, string):
         """Check if input is required"""
         if key in self.all and self.all[key] is not None:
-            if self.all[key].isalpha():
+            if not re.match(r"[^[a-zA-Z0-9]+$", self.all[key]):
                 return True
             return key + " should be string"
         return True
@@ -39,7 +39,7 @@ class Validations():
     def email(self, key, email):
         """Check required character size"""
         if key in self.all:
-            if not re.match(r"[^@]+@[^@]+\.[^@]+", self.all[key]):
+            if not re.match(r"[^@\s]+@[^@\s]+\.[a-zA-Z]+$", self.all[key]):
                 return "Invalid email address"
             return True
         return True
