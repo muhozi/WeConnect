@@ -2,7 +2,7 @@
     Helper Methods
 """
 from flask import current_app as app
-from itsdangerous import (TimedJSONWebSignatureSerializer
+from itsdangerous import (URLSafeTimedSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
 

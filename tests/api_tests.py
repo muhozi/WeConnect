@@ -3,7 +3,7 @@
 """
 import unittest
 import uuid
-from api import APP
+from api.index import APP
 from flask import json
 from api.models.user import User
 from api.models.business import Business
